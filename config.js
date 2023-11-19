@@ -1,11 +1,10 @@
-// @ts-nocheck
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import { exec, execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
 /** @type {() => unknown[]} */
@@ -16,19 +15,18 @@ const Monitors = () => JSON.parse(Utils.exec("hyprctl monitors -j"));
 // then you can use it by calling simply calling it
 
 const Workspaces = () => Widget.Box({
-    className: 'workspaces',
-    connections: [[Hyprland.active.workspace, self => {
-        // generate an array [1..10] then make buttons from the index
+    class_name: 'workspaces',
+    connections: [[Hyprland, self => {
         self.children = Hyprland.workspaces.map((ws, i) => Widget.Button({
-            onClicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
-            child: Widget.Label(`${ws.name}`),
-            className: Hyprland.active.workspace.id == i ? 'focused' : '',
+            on_clicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
+            child: Widget.Label(`${ws['name']}`),
+            class_name: Hyprland.active.workspace.id === i ? 'focused' : 'unfocused',
         }));
     }]],
 });
 
 const Clock = () => Widget.Label({
-    className: 'clock',
+    class_name: 'clock',
     xpad: 10,
     connections: [
         // this is what you should do
@@ -38,16 +36,16 @@ const Clock = () => Widget.Label({
 });
 
 const Media = () => Widget.Button({
-    className: 'media',
-    onPrimaryClick: () => Mpris.getPlayer('')?.playPause(),
-    onScrollUp: () => Mpris.getPlayer('')?.next(),
-    onScrollDown: () => Mpris.getPlayer('')?.previous(),
+    class_name: 'media',
+    on_primary_click: () => Mpris.getPlayer('')?.playPause(),
+    on_scroll_up: () => Mpris.getPlayer('')?.next(),
+    on_scroll_down: () => Mpris.getPlayer('')?.previous(),
     child: Widget.Label({
         connections: [[Mpris, self => {
             const mpris = Mpris.getPlayer('');
             // mpris player can be undefined
             if (mpris)
-                self.label = `${mpris.trackArtists.join(', ')} - ${mpris.trackTitle}`;
+                self.label = `${mpris.track_artists.join(', ')} - ${mpris.track_title}`;
             else
                 self.label = 'Nothing is playing';
         }]],
@@ -55,7 +53,7 @@ const Media = () => Widget.Button({
 });
 
 const Volume = () => Widget.Box({
-    className: 'volume',
+    class_name: 'volume',
     css: 'min-width: 180px',
     children: [
         Widget.Stack({
@@ -71,12 +69,13 @@ const Volume = () => Widget.Box({
                 if (!Audio.speaker)
                     return;
 
-                if (Audio.speaker.isMuted) {
+                if (Audio.speaker.is_muted) {
                     self.shown = '0';
                     return;
                 }
 
                 const show = [101, 67, 34, 1, 0].find(
+                    // @ts-ignore
                     threshold => threshold <= Audio.speaker.volume * 100);
 
                 self.shown = `${show}`;
@@ -84,8 +83,9 @@ const Volume = () => Widget.Box({
         }),
         Widget.Slider({
             hexpand: true,
-            drawValue: false,
-            onChange: ({ value }) => Audio.speaker.volume = value,
+            draw_value: false,
+            // @ts-ignore
+            on_change: ({ value }) => Audio.speaker.volume = value,
             connections: [[Audio, self => {
                 self.value = Audio.speaker?.volume || 0;
             }, 'speaker-changed']],
@@ -97,8 +97,8 @@ const SysTray = () => Widget.Box({
     connections: [[SystemTray, self => {
         self.children = SystemTray.items.map(item => Widget.Button({
             child: Widget.Icon({ binds: [['icon', item, 'icon']] }),
-            onPrimaryClick: (_, event) => item.activate(event),
-            onSecondaryClick: (_, event) => item.openMenu(event),
+            on_primary_click: (_, event) => item.activate(event),
+            on_secondary_click: (_, event) => item.openMenu(event),
             binds: [['tooltip-markup', item, 'tooltip-markup']],
         }));
     }]],
@@ -114,7 +114,6 @@ const Left = () => Widget.Box({
 const Center = () => Widget.Box({
     children: [
         Media(),
-        SysTray(),
     ],
 });
 
@@ -123,20 +122,21 @@ const Right = () => Widget.Box({
     children: [
         Volume(),
         Clock(),
+        SysTray(),
     ],
 });
 
-const Bar = ({ monitor } = {}) => Widget.Window({
+const Bar = ({ monitor } = {monitor: 1}) => Widget.Window({
     name: `bar-${monitor}`, // name has to be unique
-    className: 'bar',
+    class_name: 'bar',
     monitor,
     anchor: ['top', 'left', 'right'],
     css: 'background-color: #24283b',
     exclusive: true,
     child: Widget.CenterBox({
-        startWidget: Left(),
-        centerWidget: Center(),
-        endWidget: Right(),
+        start_widget: Left(),
+        center_widget: Center(),
+        end_widget: Right(),
     }),
 })
 
