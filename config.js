@@ -19,10 +19,9 @@ const Workspaces = () => Widget.Box({
     className: 'workspaces',
     connections: [[Hyprland.active.workspace, self => {
         // generate an array [1..10] then make buttons from the index
-        const arr = Array.from({ length: Hyprland.workspaces.length }, (_, i) => i + 1);
-        self.children = arr.map(i => Widget.Button({
+        self.children = Hyprland.workspaces.map((ws, i) => Widget.Button({
             onClicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
-            child: Widget.Label(`${i}`),
+            child: Widget.Label(`${ws.name}`),
             className: Hyprland.active.workspace.id == i ? 'focused' : '',
         }));
     }]],
@@ -114,7 +113,7 @@ const Left = () => Widget.Box({
 
 const Center = () => Widget.Box({
     children: [
-        // Media(),
+        Media(),
         SysTray(),
     ],
 });
