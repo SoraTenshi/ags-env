@@ -7,7 +7,8 @@ export const Workspaces = () => Widget.Box({
     connections: [[Hyprland.active, self => {
         self.children = Array.from({ length: 9 }).map((_, n) => {
             const i = n + 1;
-            const name = Hyprland.workspaces[n]["name"] ?? `${i}`;
+            // @ts-ignore
+            let name = Hyprland.workspaces[n]["name"];
             return Widget.Button({
                 on_clicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
                 child: Widget.Label(name),
