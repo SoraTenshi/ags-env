@@ -7,11 +7,9 @@ export const Workspaces = () => Widget.Box({
     connections: [[Hyprland.active, self => {
         self.children = Array.from({ length: 9 }).map((_, n) => {
             const i = n + 1;
-            // @ts-ignore
-            let name = Hyprland.workspaces[n]["name"];
             return Widget.Button({
                 on_clicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
-                child: Widget.Label(name),
+                child: Widget.Label(`${i}`),
                 class_name: Hyprland.active.workspace.id === i ? 'focused' : 'unfocused',
             });
         })}
