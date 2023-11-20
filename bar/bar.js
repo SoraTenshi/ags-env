@@ -6,7 +6,7 @@ import { SysTray } from './modules/systray.js';
 
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
-import Gdk from 'gi://Gdk';
+// import Gdk from 'gi://Gdk';
 import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
 
 const Left = () => Widget.Box({
@@ -24,7 +24,7 @@ const Center = () => Widget.Box({
 const Right = () => Widget.Box({
     hpack: 'end',
     children: [
-        Volume(),
+        Volume('speaker'), // 'microphone'
         Clock(),
         SysTray(),
     ],

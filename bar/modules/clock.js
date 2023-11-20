@@ -6,7 +6,7 @@ export const Clock = () => Widget.Label({
     xpad: 10,
     connections: [
         // this is what you should do
-        [1000, self => execAsync(['date', '+%H:%M:%S %a'])
+        [1000, self => execAsync(['date', '+%H:%M:%S | %Y-%m-%d %a'])
             .then(date => self.label = date).catch(console.error)],
     ],
 });
