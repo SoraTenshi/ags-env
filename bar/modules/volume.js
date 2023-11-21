@@ -1,7 +1,7 @@
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
-export const Volume = ( type = 'speaker') => {
+export const Volume = ( /** @type {string} */ type ) => {
     return Widget.EventBox({
         on_hover: self => {
             let child  = self.child["children"][0];
@@ -17,21 +17,23 @@ export const Volume = ( type = 'speaker') => {
         },
         child: Widget.Box({
             class_name: 'volume',
+            hexpand: true,
             children: [
                 Widget.Revealer({
                     reveal_child: false,
                     transition_duration: 500,
                     transition: 'slide_left',
-                    child: Widget.Slider({
+                    child: Widget.Box({
                         hexpand: true,
-                        draw_value: false,
-                        on_change: ({ value }) => {
-                            if(!Audio[type]) return;
-                            Audio[type].volume = value;
-                        },
-                        connections: [[Audio, self => {
-                            self.value = Audio[type]?.volume || 0;
-                        }, `${type}-changed`]],
+                        css: 'min-width: 180px;',
+                        child: Widget.Slider({
+                            hexpand: true,
+                            draw_value: false,
+                            on_change: ({ value }) => Audio[type].volume = value,
+                            connections: [[Audio, self => {
+                                self.value = Audio[type]?.volume || 0;
+                            }, `${type}-changed`]],
+                        }),
                     }),
                 }),
                 Widget.Stack({
@@ -53,7 +55,6 @@ export const Volume = ( type = 'speaker') => {
                         }
 
                         const show = [101, 67, 34, 1, 0].find(
-                            // @ts-ignore
                             threshold => threshold <= Audio[type].volume * 100);
 
                         self.shown = `${show}`;
@@ -63,4 +64,3 @@ export const Volume = ( type = 'speaker') => {
         }),
     });
 };
-

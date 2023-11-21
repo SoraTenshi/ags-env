@@ -4,6 +4,7 @@ import { Clock } from './modules/clock.js';
 import { Media } from './modules/media.js';
 import { SysTray } from './modules/systray.js';
 
+import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
 // import Gdk from 'gi://Gdk';
@@ -24,6 +25,7 @@ const Center = () => Widget.Box({
 const Right = () => Widget.Box({
     hpack: 'end',
     children: [
+        Volume('microphone'),
         Volume('speaker'), // 'microphone'
         Clock(),
         SysTray(),
@@ -52,6 +54,7 @@ const Monitors = () => {
 }
 
 export default {
+    style: App.configDir + '/style.css',
     windows: [Monitors().map((_, i) => Bar({monitor: i}))],
 }
 
