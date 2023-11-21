@@ -25,8 +25,9 @@ const Center = () => Widget.Box({
 const Right = () => Widget.Box({
     hpack: 'end',
     children: [
-        Volume('microphone'),
-        Volume('speaker'), // 'microphone'
+        // Volume('microphone'),
+        // Volume('speaker'), // 'microphone'
+        Volume(),
         Clock(),
         SysTray(),
     ],

@@ -21,11 +21,12 @@ export const Media = () => {
                     self.visible = !!player;
                     if (!player) return;
                     const { track_artists, track_title } = player;
-                    self.child["label"] = `${track_artists.join(', ')} - ${track_title}`;
+                    if(!track_title.length) self.child["label"] = "Nothing to play.";
+                    else self.child["label"] = `${track_artists.join(', ')} - ${track_title}`;
                 }]],
             }),
             overlays: [Widget.ProgressBar({
-                css: 'foreground-color: #bb9af7',
+                css: 'color: #bb9af7',
                 connections: [[Mpris, _ => {
                     player = Mpris.players[0];
                 }],
