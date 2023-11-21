@@ -31,7 +31,7 @@ export const Volume = ( /** @type {string} */ type ) => {
                             draw_value: false,
                             on_change: ({ value }) => Audio[type].volume = value,
                             connections: [[Audio, self => {
-                                self.value = Audio[type]?.volume || 0;
+                                self.value = Audio[type].volume || 0;
                             }, `${type}-changed`]],
                         }),
                     }),
