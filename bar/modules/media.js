@@ -10,23 +10,28 @@ export const Media = () => {
         on_scroll_up: () => Mpris.getPlayer('')?.next(),
         on_scroll_down: () => Mpris.getPlayer('')?.previous(),
         child: Widget.Overlay({
+            class_name: 'track',
             pass_through: true,
             child: Widget.Button({
                 on_clicked: () => Mpris.players[0]?.playPause(),
-                child: Widget.Label(),
-                css: 'background-color: transparent;',
+                child: Widget.Label({ class_name: 'artist' }),
                 visible: false,
                 connections: [[Mpris, self => {
                     const player = Mpris.players[0];
                     self.visible = !!player;
-                    if (!player) return;
+                    if (!player) {
+                        self.child["label"] = "[Nothing]";
+                        return;
+                    }
                     const { track_artists, track_title } = player;
-                    if(!track_title.length) self.child["label"] = "Nothing to play.";
-                    else self.child["label"] = `${track_artists.join(', ')} - ${track_title}`;
+                    let {artist, title} = {artist: track_artists.join(', '), title: track_title};
+                    if (title.length > 21) title = title.slice(0, 21) + "...";
+                    if (artist.length > 21) artist = artist.slice(0, 21) + "...";
+                    self.child["label"] = `${artist} - ${title}`;
                 }]],
             }),
             overlays: [Widget.ProgressBar({
-                css: 'color: #bb9af7',
+                class_name: 'track',
                 connections: [[Mpris, _ => {
                     player = Mpris.players[0];
                 }],

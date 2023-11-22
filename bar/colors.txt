@@ -1,0 +1,34 @@
+
+:* { */
+  /* Primary Background */
+  --bg: #24283b;
+
+  /* Alternative Background */
+  --alt-bg: #1a1b26;
+
+  /* Foreground Text */
+  --text: #c0caf5;
+
+  /* Alternate Foreground Text */
+  --alt-text: #a9b1d6;
+
+  /* Accent Colors */
+  --accent-lblue: #7aa2f7; /* Lighter blue for highlights */
+  --accent-purple: #bb9af7; /* Purple for secondary highlights */
+  --accent-cyan: #73daca; /* Cyan for interactive elements */
+
+  /* Alert Colors */
+  --error: #f7768e; /* Red for errors */
+  --warning: #e0af68; /* Yellow for warnings */
+  --info: #0db9d7; /* Blue for informational messages */
+
+  /* Selection Colors */
+  --selection-bg: #33467c; /* Background color for selections */
+  --selection-text: #e0af68; /* Foreground color for selections */
+
+  /* Additional Colors */
+  --success: #9ece6a; /* Green for success messages */
+  --muted: #545c7e; /* Muted color for less important info */
+  --border: #33467c; /* Border color for elements */
+}
+

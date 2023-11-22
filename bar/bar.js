@@ -26,7 +26,7 @@ const Right = () => Widget.Box({
     hpack: 'end',
     children: [
         // Volume('microphone'),
-        Volume("speaker"), // 'microphone'
+        Volume('speaker'), // 'microphone'
         Clock(),
         SysTray(),
     ],
@@ -37,7 +37,6 @@ export const Bar = ({ monitor } = {monitor: 1}) => Widget.Window({
     class_name: 'bar',
     monitor,
     anchor: ['top', 'left', 'right'],
-    css: 'background-color: #24283b',
     exclusivity: 'exclusive',
     child: Widget.CenterBox({
         start_widget: Left(),
@@ -54,7 +53,7 @@ const Monitors = () => {
 }
 
 export default {
-    style: App.configDir + '/style.css',
+    style: `${App.configDir}/bar/style.css`,
     windows: [Monitors().map((_, i) => Bar({monitor: i}))],
 }
 
