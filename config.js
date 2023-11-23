@@ -1,1 +1,1 @@
-export default (await import('./bar/bar.js'));
+export default (await import('./bar/bar.js')).default;

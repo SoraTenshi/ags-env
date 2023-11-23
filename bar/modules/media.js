@@ -4,7 +4,7 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 export const Media = () => {
     /** @type {MprisPlayer} */
     let player;
-    return Widget.Button({
+    return Widget.EventBox({
         class_name: 'media',
         on_primary_click: () => Mpris.getPlayer('')?.playPause(),
         on_scroll_up: () => Mpris.getPlayer('')?.next(),
@@ -25,13 +25,13 @@ export const Media = () => {
                     }
                     const { track_artists, track_title } = player;
                     let {artist, title} = {artist: track_artists.join(', '), title: track_title};
-                    if (title.length > 21) title = title.slice(0, 21) + "...";
+                    if (title.length > 12) title = title.slice(0, 12) + "...";
                     if (artist.length > 21) artist = artist.slice(0, 21) + "...";
                     self.child["label"] = `${artist} - ${title}`;
                 }]],
             }),
             overlays: [Widget.ProgressBar({
-                class_name: 'track',
+                class_name: 'trackbar',
                 connections: [[Mpris, _ => {
                     player = Mpris.players[0];
                 }],

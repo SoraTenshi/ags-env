@@ -1,3 +1,16 @@
 .bar {
-  color: #24283b;
+  background-color: #24283b;
+  color: #c0caf5;
+}
+
+.workspace {
+  padding: 5px;
+}
+
+.media,
+.track {
+}
+
+progress {
+  background-color: #bb9af7;
 }
