@@ -12,8 +12,23 @@
   padding: 5px;
 }
 
+.media {
+  min-width: 200px;
+}
+
 .music {
   padding: 5px;
+}
+
+.artist {
+  font-family: "Lilex Nerd Font Regular";
+  font-size: 0.9rem;
+}
+
+.sound {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #2b2f42;
 }
 
 .systray {

@@ -10,8 +10,8 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 // import Gdk from 'gi://Gdk';
 import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
 
-const Sound = () => Widget.Box ({
-    class_name: 'volume',
+const Sound = () => Widget.Box({
+    class_name: 'sound',
     children: [
         Volume('microphone'),
         Volume('speaker'),

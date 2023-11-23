@@ -14,9 +14,12 @@ export const Media = () => {
       child: Widget.Overlay({
         pass_through: true,
         child: Widget.Button({
-          class_name: 'music',
           on_clicked: () => Mpris.players[0]?.playPause(),
-          child: Widget.Label({ class_name: 'artist' }),
+          child: Widget.Label({
+            max_width_chars: 28,
+            truncate: 'end',
+            class_name: 'artist'
+          }),
           visible: false,
           connections: [[Mpris, self => {
             const mplayer = Mpris.players[0];
@@ -26,10 +29,7 @@ export const Media = () => {
               return;
             }
             const { track_artists, track_title } = mplayer;
-            let { artist, title } = { artist: track_artists.join(', '), title: track_title };
-            if (title.length > 12) title = title.slice(0, 12) + "...";
-            if (artist.length > 21) artist = artist.slice(0, 21) + "...";
-            self.child["label"] = `${artist} - ${title}`;
+            self.child["label"] = `${track_artists.join(', ')} - ${track_title}`;
           }]],
         }),
         overlays: [Widget.ProgressBar({

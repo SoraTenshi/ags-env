@@ -15,6 +15,23 @@ export const Icon = {
     low: '\ue029',
     muted: '\ue02b',
   },
+  weather: {
+    sunny: '\ue81a',
+    cloudy: '\ue2bd',
+    windy: '\uefd8',
+    rainy: '\uf176',
+    thunderstorm: '\uebdb',
+    partly_cloudy: '\uf172',
+    cloudy_night: '\uea46',
+    clear_night: '\uf159',
+    sunny_snowy: '\ue819',
+    foggy: '\ue818',
+    snowy: '\ue2cd',
+    storm: '\uf070',
+    hail: '\uf67f',
+    mist: '\ue188',
+    rainy_snowy: '\uf61d',
+  },
 }
 
 export const MaterialIcon = (/** @type {string} */ icon) => Widget.Label({
