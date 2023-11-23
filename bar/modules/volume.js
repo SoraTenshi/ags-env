@@ -1,5 +1,6 @@
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+import { MaterialIcon, Icon } from '../../widgets/icons.js';
 
 export const Volume = ( /** @type {string} */ type ) => {
     return Widget.EventBox({
@@ -16,7 +17,6 @@ export const Volume = ( /** @type {string} */ type ) => {
             Audio[type].is_muted = !Audio[type].is_muted;
         },
         child: Widget.Box({
-            class_name: 'volume',
             hexpand: true,
             children: [
                 Widget.Revealer({
@@ -39,11 +39,11 @@ export const Volume = ( /** @type {string} */ type ) => {
                 Widget.Stack({
                     items: [
                         // tuples of [string, Widget]
-                        ['101', Widget.Icon('audio-volume-overamplified-symbolic')],
-                        ['67', Widget.Icon('audio-volume-high-symbolic')],
-                        ['34', Widget.Icon('audio-volume-medium-symbolic')],
-                        ['1', Widget.Icon('audio-volume-low-symbolic')],
-                        ['0', Widget.Icon('audio-volume-muted-symbolic')],
+                        ['101', MaterialIcon(Icon[type].overamplified)],
+                        ['67', MaterialIcon(Icon[type].high)],
+                        ['34', MaterialIcon(Icon[type].medium)],
+                        ['1', MaterialIcon(Icon[type].low)],
+                        ['0', MaterialIcon(Icon[type].muted)],
                     ],
                     connections: [[Audio, self => {
                         if (!Audio[type])

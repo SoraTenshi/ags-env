@@ -1,6 +1,11 @@
 .bar {
   background-color: #24283b;
   color: #c0caf5;
+  opacity: 0.8;
+}
+
+.icon-material {
+  font-size: 1.3rem;
 }
 
 .workspace {

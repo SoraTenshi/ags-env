@@ -1,5 +1,5 @@
 
-:* { */
+:root { */
   /* Primary Background */
   --bg: #24283b;
 

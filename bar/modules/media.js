@@ -19,13 +19,13 @@ export const Media = () => {
           child: Widget.Label({ class_name: 'artist' }),
           visible: false,
           connections: [[Mpris, self => {
-            const player = Mpris.players[0];
-            self.visible = !!player;
-            if (!player) {
+            const mplayer = Mpris.players[0];
+            self.visible = !!mplayer;
+            if (!mplayer) {
               self.child["label"] = "[Nothing]";
               return;
             }
-            const { track_artists, track_title } = player;
+            const { track_artists, track_title } = mplayer;
             let { artist, title } = { artist: track_artists.join(', '), title: track_title };
             if (title.length > 12) title = title.slice(0, 12) + "...";
             if (artist.length > 21) artist = artist.slice(0, 21) + "...";

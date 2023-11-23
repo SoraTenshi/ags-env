@@ -10,6 +10,14 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 // import Gdk from 'gi://Gdk';
 import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
 
+const Sound = () => Widget.Box ({
+    class_name: 'volume',
+    children: [
+        Volume('microphone'),
+        Volume('speaker'),
+    ]
+});
+
 const Left = () => Widget.Box({
     children: [
         Workspaces(),
@@ -25,8 +33,7 @@ const Center = () => Widget.Box({
 const Right = () => Widget.Box({
     hpack: 'end',
     children: [
-        // Volume('microphone'),
-        Volume('speaker'), // 'microphone'
+        Sound(),
         Clock(),
         SysTray(),
     ],
