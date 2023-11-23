@@ -1,7 +1,8 @@
 import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
-export const SysTray = () => Widget.Button({
+export const SysTray = () => Widget.Box({
+    class_name: 'systray',
     child: Widget.Box({
         connections: [[SystemTray, self => {
             self.children = SystemTray.items.map(item => Widget.Button({

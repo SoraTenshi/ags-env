@@ -7,8 +7,13 @@
   padding: 5px;
 }
 
-.media,
-.track {
+.music {
+  padding: 5px;
+}
+
+.systray {
+  padding: 5px;
+  background-color: transparent;
 }
 
 progress {
