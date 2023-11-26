@@ -36,6 +36,40 @@
   background-color: transparent;
 }
 
+.workspaces button.active {
+  border-bottom: 3px solid #bb9af7;
+}
+
+.workspaces button.focused {
+  border-bottom: 3px solid #73daca;
+}
+
+.weather {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  background-color: #2b2f42;
+}
+
+.weather-icon {
+  font-size: 1.4rem;
+}
+
+.weather-temp {
+  margin-top: 1px;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+slider {
+  all: unset;
+}
+
+trough {
+  min-height: 10px;
+  color: #bb9af7;
+}
+
 progress {
   background-color: #bb9af7;
 }

@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "description": "AGS starter configuration",
     "main": "config.js",
-    "author": "Aylur",
+    "author": "SoraTenshi",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Aylur/ags.git"
+        "url": "git+https://github.com/SoraTenshi/ags.git#fetch-util"
     },
     "devDependencies": {
         "@girs/dbusmenugtk3-0.4": "^0.4.0-3.2.0",

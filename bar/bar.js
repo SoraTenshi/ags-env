@@ -3,6 +3,7 @@ import { Volume } from './modules/volume.js';
 import { Clock } from './modules/clock.js';
 import { Media } from './modules/media.js';
 import { SysTray } from './modules/systray.js';
+import { Weather } from './modules/weather.js';
 
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
@@ -33,6 +34,7 @@ const Center = () => Widget.Box({
 const Right = () => Widget.Box({
     hpack: 'end',
     children: [
+        Weather(),
         Sound(),
         Clock(),
         SysTray(),

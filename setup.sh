@@ -7,8 +7,9 @@ cd /tmp/ags-config
 
 # clone
 echo "cloning ags"
-git clone https://github.com/Aylur/ags.git
+git clone https://github.com/SoraTenshi/ags.git
 cd ags
+git fetch && git switch fetch-util
 npm i
 
 # generate
@@ -80,6 +81,7 @@ gi "Gtk" "gtk-3.0" >>$dts
 gi "GObject" "gobject-2.0" >>$dts
 gi "Gio" "gio-2.0" >>$dts
 gi "GLib" "glib-2.0" >>$dts
+gi "Soup" "soup-3.0" >> $dts
 
 # remove tmp
 rm -rf /tmp/ags-config
