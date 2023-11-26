@@ -33,7 +33,7 @@ export const Weather = () => Widget.Box({
         /** @type {string} */
         const temp = weatherCondition['temp_C'];
         self.children[0]['label'] = icon;
-        self.children[1]['label'] = ` ${temp.replaceAll('+', '')}°C`;
+        self.children[1]['label'] = `${temp.replaceAll('+', '')}°C`;
 
         const location = weather['nearest_area'][0];
         const city = location['areaName'][0]['value'];

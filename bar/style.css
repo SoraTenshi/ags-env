@@ -52,10 +52,12 @@
 }
 
 .weather-icon {
+  padding: 5px;
   font-size: 1.4rem;
 }
 
 .weather-temp {
+  padding: 5px;
   margin-top: 1px;
   font-size: 0.9rem;
   font-weight: normal;
