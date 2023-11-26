@@ -13,16 +13,18 @@
 }
 
 .media {
-  min-width: 200px;
+  min-width: 300px;
 }
 
 .music {
   padding: 5px;
+  min-width: 300px;
 }
 
 .artist {
   font-family: "Lilex Nerd Font Regular";
   font-size: 0.9rem;
+  min-width: 300px;
 }
 
 .sound {
@@ -61,6 +63,7 @@
   margin-top: 1px;
   font-size: 0.9rem;
   font-weight: normal;
+  font-feature-settings: "zero";
 }
 
 slider {
