@@ -2,6 +2,8 @@
   background-color: #24283b;
   color: #c0caf5;
   opacity: 0.8;
+  font-family: "Lilex Nerd Font Regular";
+  font-feature-settings: "zero";
 }
 
 .icon-material {
@@ -22,7 +24,6 @@
 }
 
 .artist {
-  font-family: "Lilex Nerd Font Regular";
   font-size: 0.9rem;
   min-width: 300px;
 }
@@ -63,7 +64,12 @@
   margin-top: 1px;
   font-size: 0.9rem;
   font-weight: normal;
-  font-feature-settings: "zero";
+}
+
+tooltip {
+  background-color: #24283b;
+  color: #c0caf5;
+  border: 2px solid #1a1b26;
 }
 
 slider {
