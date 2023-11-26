@@ -66,6 +66,28 @@
   font-weight: normal;
 }
 
+.clock-bg {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.clock {
+  font-size: 0.8rem;
+}
+
+.ampm {
+  font-family: "RictyDiminished with FiraCode";
+  font-size: 1.3rem;
+  color: #7aa2f7;
+}
+
+.day {
+  font-family: "RictyDiminished with FiraCode";
+  font-size: 1.3rem;
+  color: #7aa2f7;
+}
+
 tooltip {
   background-color: #24283b;
   color: #c0caf5;

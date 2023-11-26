@@ -5,12 +5,6 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
 const thirtyMinutes = 1000 * 60 * 30;
 
-/** @type {import('types/utils.js').GetFetchOptions} */
-const options = {
-  method: 'GET',
-  headers: {},
-};
-
 export const Weather = () => Widget.Box({
   class_name: 'weather',
   has_tooltip: true,
@@ -22,7 +16,7 @@ export const Weather = () => Widget.Box({
     }),
   ],
   connections: [[thirtyMinutes, self => {
-    Utils.fetch('http://wttr.in/?format=j1', options)
+    Utils.fetch('http://wttr.in/?format=j1')
       .then(res => {
         let weather = JSON.parse(res);
         let weatherCondition = weather['current_condition'][0];
