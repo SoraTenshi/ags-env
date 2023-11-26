@@ -20,10 +20,8 @@ export const Media = () => {
             truncate: 'end',
             class_name: 'artist'
           }),
-          visible: false,
           connections: [[Mpris, self => {
             const mplayer = Mpris.players[0];
-            self.visible = !!mplayer;
             if (!mplayer) {
               self.child["label"] = "[Nothing]";
               return;
@@ -34,11 +32,14 @@ export const Media = () => {
         }),
         overlays: [Widget.ProgressBar({
           class_name: 'trackbar',
-          connections: [[Mpris, _ => {
+          visible: false,
+          connections: [[Mpris, self => {
             player = Mpris.players[0];
+            self.visible = !!player;
           }],
           [1000, self => {
             if (!player) return;
+            self.visible = !!player;
             self.value = player.position / player.length;
           }]],
         })],
