@@ -34,7 +34,7 @@ export const Clock = () => Widget.Button({
             xpad: 10,
             connections: [
                 // this is what you should do
-                [1000, self => execAsync(['date', '+%I:%M:%S\n%Y-%m-%d'])
+                [1000, self => execAsync(['date', '+%I:%M:%S\n%y-%m-%d'])
                     .then(date => self.label = date).catch(console.error)],
             ],
         }),
