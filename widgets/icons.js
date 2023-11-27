@@ -15,7 +15,6 @@ export const Icon = {
     low: '\ue029',
     muted: '\ue02b',
   },
-  
   weather: {
     '113': '\ue430', //"Sunny",
     '116': '\uf172', //"PartlyCloudy",
@@ -65,6 +64,17 @@ export const Icon = {
     '389': '\uebdb', //"ThunderyHeavyRain",
     '392': '\uebdb', //"ThunderySnowShowers",
     '395': '\uf61c', //"HeavySnowShowers",
+  },
+  wired: {
+    power: '\ue63c',
+    poweroff: '\ue646',
+  },
+  wifi: {
+    'none': '\ue1d0',
+    'bad': '\uebe4',
+    'low': '\uebd6',
+    'normal': '\uebe1',
+    'good': '\ue1d8',
   },
 }
 

@@ -18,6 +18,13 @@
   min-width: 300px;
 }
 
+.network {
+  background-color: #2b2f42;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
 .music {
   padding: 5px;
   min-width: 300px;

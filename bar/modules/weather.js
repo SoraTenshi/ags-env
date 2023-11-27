@@ -34,7 +34,8 @@ export const Weather = () => Widget.Box({
         const country = location['country'][0]['value'];
         self.tooltip_markup = `Location: ${city}, ${country}` + '\n' +
           `FeelsLike: ${weatherCondition['FeelsLikeC'].replaceAll('+', '')}°C` + '\n' +
-          `Humidity: ${weatherCondition['humidity']}%`;
+          `Humidity: ${weatherCondition['humidity']}%` + '\n' +
+          `Weather: ${weatherCondition['weatherDesc'][0]['value']}`;
       })
       .catch(err => console.error(err));
   }]]
