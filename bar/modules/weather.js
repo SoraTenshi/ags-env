@@ -3,9 +3,10 @@ import { Icon } from '../../widgets/icons.js';
 
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
+/** @type {number} */
 const thirtyMinutes = 1000 * 60 * 30;
 
-const twelveToTwentyFour = (s) => {
+const twelveToTwentyFour = (/** @type {string} */ s) => {
   const time = s.split(' ');
   const [hoursStr, minutesStr] = time[0].split(':');
   let hours = Number(hoursStr);
@@ -21,7 +22,7 @@ const twelveToTwentyFour = (s) => {
   return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 }
 
-const isDayTime = (sunset, sunrise, now) => {
+const isDayTime = (/** @type {Date} */ sunset, /** @type {Date} */ sunrise, /** @type {Date} */ now) => {
   return sunset.getTime() < now.getTime() && now.getTime() < sunrise.getTime();
 }
 
