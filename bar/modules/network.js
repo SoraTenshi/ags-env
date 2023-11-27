@@ -8,7 +8,6 @@ const WifiIndicator = () => Widget.Box({
     Widget.Label({
       css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
       has_tooltip: true,
-      // binds: [['label', Network.wifi, 'icon-name']],
       binds: [['label', Network.wifi, 'strength', (/** @type {number} */ strength) => {
         if (strength < 0.1) return Icon.wifi.none;
         if (strength < 0.26) return Icon.wifi.bad;
@@ -25,7 +24,6 @@ const WifiIndicator = () => Widget.Box({
 const WiredIndicator = () => Widget.Label({
   css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
   binds: [['label', Network.wired, 'internet', internet => {
-    console.log(internet);
     if(internet === "connected") return Icon.wired.power;
     if(internet === "connecting") return Icon.wired.poweroff;
     if(internet === "disconnected") return Icon.wired.poweroff;

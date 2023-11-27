@@ -5,24 +5,58 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
 const thirtyMinutes = 1000 * 60 * 30;
 
+const twelveToTwentyFour = (s) => {
+  const time = s.split(' ');
+  const [hoursStr, minutesStr] = time[0].split(':');
+  let hours = Number(hoursStr);
+  const minutes = Number(minutesStr);
+  const ampm = time[1].toUpperCase();
+
+  if (ampm === 'PM' && hours < 12) {
+    hours += 12;
+  }
+  if (ampm === 'AM' && hours === 12) {
+    hours = 0;
+  }
+  return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+}
+
+const isDayTime = (sunset, sunrise, now) => {
+  return sunset.getTime() < now.getTime() && now.getTime() < sunrise.getTime();
+}
+
 export const Weather = () => Widget.Box({
   class_name: 'weather',
   has_tooltip: true,
   children: [Widget.Label({
-      class_name: 'weather-icon',
-      css: "font-family: 'Material Symbols Sharp'",
-    }), Widget.Label({
-      class_name: 'weather-temp',
-    }),
+    class_name: 'weather-icon',
+    css: "font-family: 'Material Symbols Sharp'",
+  }), Widget.Label({
+    class_name: 'weather-temp',
+  }),
   ],
   connections: [[thirtyMinutes, self => {
     Utils.fetch('http://wttr.in/?format=j1')
       .then(res => {
-        let weather = JSON.parse(res);
-        let weatherCondition = weather['current_condition'][0];
+        const weather = JSON.parse(res);
+        const weatherCondition = weather['current_condition'][0];
+
+        const currentTime = twelveToTwentyFour(weatherCondition['localObsDateTime'].substring(11));
+        const sunSetDate = weather['weather'][0]['date'];
+        let sunRiseDate = weather['weather'][0]['date'];
+        sunRiseDate = sunRiseDate.split('-');
+        sunRiseDate = `${sunRiseDate[0]}-${sunRiseDate[1]}-${Number(sunRiseDate[2])+1}`;
+        const sunSet = twelveToTwentyFour(weather['weather'][0]['astronomy'][0]['sunset']);
+        const sunRise = twelveToTwentyFour(weather['weather'][0]['astronomy'][0]['sunrise']);
+        const sunset = new Date(`${sunSetDate}T${sunSet}`);
+        const sunrise = new Date(`${sunRiseDate}T${sunRise}`);
+        const current = new Date(`${sunSetDate}T${currentTime}`);
+
+        const isDay = isDayTime(sunset, sunrise, current);
 
         /** @type {string} */
-        const icon = Icon.weather[weatherCondition['weatherCode']];
+        let icon = Icon.weather[weatherCondition['weatherCode']];
+        icon = isDay ? icon : (Icon.weather[icon] ?? icon);
 
         /** @type {string} */
         const temp = weatherCondition['temp_C'];

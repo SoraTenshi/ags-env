@@ -30,7 +30,6 @@ export const Clock = () => Widget.Button({
         }),
         Widget.Label({
             class_name: 'clock',
-            css: 'text-align: justify',
             xpad: 10,
             connections: [
                 // this is what you should do
