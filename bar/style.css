@@ -47,9 +47,9 @@
   border-bottom: 3px solid #bb9af7;
 }
 
-.workspaces button.focused {
-  border-bottom: 3px solid #73daca;
-}
+/* .workspaces button.focused {
+//   border-bottom: 3px solid #73daca;
+ } */
 
 .weather {
   margin-top: 5px;
