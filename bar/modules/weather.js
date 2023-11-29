@@ -23,7 +23,8 @@ const twelveToTwentyFour = (/** @type {string} */ s) => {
 }
 
 const isDayTime = (/** @type {Date} */ sunset, /** @type {Date} */ sunrise, /** @type {Date} */ now) => {
-  return sunset.getTime() < now.getTime() && now.getTime() < sunrise.getTime();
+  const ret = sunset.getTime() > now.getTime() && now.getTime() > sunrise.getTime();
+  return ret;
 }
 
 export const Weather = () => Widget.Box({
@@ -57,7 +58,8 @@ export const Weather = () => Widget.Box({
 
         /** @type {string} */
         let icon = Icon.weather[weatherCondition['weatherCode']];
-        icon = isDay ? icon : (Icon.weather[icon] ?? icon);
+        const night = Icon.weather[icon];
+        icon = isDay ? icon : (night ?? icon);
 
         /** @type {string} */
         const temp = weatherCondition['temp_C'];

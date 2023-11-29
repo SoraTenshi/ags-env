@@ -64,7 +64,7 @@ export const Icon = {
     '389': '\uebdb', //"ThunderyHeavyRain",
     '392': '\uebdb', //"ThunderySnowShowers",
     '395': '\uf61c', //"HeavySnowShowers",
-    '\uf60b': '\uf159', // Night
+    '\ue430': '\uf159', // Night
     '\uf172': '\uea46', // Partly cloudy, night
   },
   wired: {
