@@ -39,11 +39,11 @@ export const Volume = ( /** @type {string} */ type ) => {
                 Widget.Stack({
                     items: [
                         // tuples of [string, Widget]
-                        ['101', MaterialIcon({ icon: Icon[type].overamplified })],
-                        ['67', MaterialIcon({ icon: Icon[type].high })],
-                        ['34', MaterialIcon({ icon: Icon[type].medium })],
-                        ['1', MaterialIcon({ icon: Icon[type].low })],
-                        ['0', MaterialIcon({ icon: Icon[type].muted })],
+                        ['101', MaterialIcon({ icon: Icon[type].overamplified, size: '1.2rem' })],
+                        ['67', MaterialIcon({ icon: Icon[type].high, size: '1.2rem' })],
+                        ['34', MaterialIcon({ icon: Icon[type].medium, size: '1.2rem' })],
+                        ['1', MaterialIcon({ icon: Icon[type].low, size: '1.2rem' })],
+                        ['0', MaterialIcon({ icon: Icon[type].muted, size: '1.2rem' })],
                     ],
                     connections: [[Audio, self => {
                         if (!Audio[type])
