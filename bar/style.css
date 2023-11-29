@@ -10,8 +10,6 @@
 }
 
 .workspace {
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .workspace-btn {
@@ -22,8 +20,6 @@
 }
 
 .network {
-  margin-top: 5px;
-  margin-bottom: 5px;
   margin-right: 5px;
 }
 
@@ -38,31 +34,22 @@
 }
 
 .sound {
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .systray {
-  padding: 5px;
   background-color: transparent;
 }
 
 .workspaces button.active {
-  border-bottom: 3px solid #bb9af7;
+  margin-bottom: 5px;
 }
 
-/* .workspaces button.focused {
-//   border-bottom: 3px solid #73daca;
- } */
-
 .weather {
-  margin-top: 5px;
-  margin-bottom: 5px;
   margin-right: 5px;
 }
 
 .weather-icon {
-  padding: 5px;
+  margin-left: 5px;
   font-size: 1.4rem;
 }
 
@@ -74,8 +61,6 @@
 }
 
 .clock-bg {
-  margin-top: 5px;
-  margin-bottom: 5px;
   margin-left: 5px;
 }
 
@@ -86,13 +71,13 @@
 
 .ampm {
   font-family: "RictyDiminished with Fira Code Regular";
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #7aa2f7;
 }
 
 .day {
   font-family: "RictyDiminished with Fira Code Regular";
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #7aa2f7;
 }
 
