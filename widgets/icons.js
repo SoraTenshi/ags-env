@@ -79,13 +79,14 @@ export const Icon = {
     'good': '\ue1d8',
   },
   workspace: {
-    'active': '\ue837',
-    'inactive': '\ue836',
+    'active': '\ue146',
+    'inactive': '\ue835',
+    'occupied': '\ue909',
   },
 }
 
-export const MaterialIcon = (/** @type {string} */ icon) => Widget.Label({
+export const MaterialIcon = ({ /** @type {string} */ icon, size = '1.0rem' }) => Widget.Label({
   class_name: `icon-material`,
-  css: "font-family: 'Material Symbols Sharp';",
+  css: `font-family: 'Material Symbols Sharp'; font-size: ${size}`,
   label: icon,
 })

@@ -13,10 +13,14 @@ export const Workspaces = () => Widget.Box({
     connections: [[Hyprland.active.workspace, self => {
       self.children = Array.from({ length: 9 }).map((_, n) => {
         const i = (n + 1);
-        const uwu = Hyprland.active.workspace.id === i ? 'active' : 'inactive';
+        let uwu = Hyprland.active.workspace.id === i ? 'active' : 'inactive';
+        const currentWs = Hyprland.getWorkspace(i);
+        if (uwu === 'inactive' && currentWs && currentWs['windows'] > 0) {
+          uwu = 'occupied';
+        }
         return Widget.Button({
           on_clicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
-          child: MaterialIcon(Icon.workspace[uwu]),
+          child: MaterialIcon({ icon: Icon.workspace[uwu], }),
           class_name: uwu,
         });
       })

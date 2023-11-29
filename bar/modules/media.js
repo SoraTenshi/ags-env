@@ -3,7 +3,7 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
 export const Media = () => {
   /** @type {MprisPlayer} */
-  let player;
+  let player = Mpris.players[0];
   return Widget.EventBox({
     class_name: 'media',
     on_primary_click: () => Mpris.getPlayer('')?.playPause(),

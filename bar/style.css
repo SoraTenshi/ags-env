@@ -10,7 +10,11 @@
 }
 
 .workspace {
-  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.workspace-btn {
 }
 
 .media {
@@ -24,7 +28,7 @@
 }
 
 .music {
-  padding: 5px;
+  margin-bottom: 5px;
   min-width: 300px;
 }
 
