@@ -81,6 +81,22 @@
   color: #7aa2f7;
 }
 
+.pre-search {
+  min-width: 50px;
+  background-color: #7aa2f7;
+  color: #24283b;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.search {
+  background-color: #24283b;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 tooltip {
   background-color: #24283b;
   color: #c0caf5;

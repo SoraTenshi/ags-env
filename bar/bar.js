@@ -5,12 +5,21 @@ import { Media } from './modules/media.js';
 import { SysTray } from './modules/systray.js';
 import { Weather } from './modules/weather.js';
 import { Connection } from './modules/network.js';
+import { AppLauncher } from './modules/applications.js';
 
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+import Variable from 'resource:///com/github/Aylur/ags/variable.js';
+
+import Gdk from 'gi://Gdk';
+
+import './state.js';
 
 // import Gdk from 'gi://Gdk';
 import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
+
+const Focusable = Variable(false);
+globalThis.Focusable = Focusable;
 
 const Sound = () => Widget.Box({
     class_name: 'sound',
@@ -49,10 +58,33 @@ export const Bar = ({ monitor } = {monitor: 1}) => Widget.Window({
     monitor,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
-    child: Widget.CenterBox({
-        start_widget: Left(),
-        center_widget: Center(),
-        end_widget: Right(),
+    binds: [['focusable', Focusable, 'value']],
+    connections: [['key-press-event', (self, event) => {
+        if(event.get_keyval()[1] === Gdk.KEY_Escape) {
+            Focusable.value = false;
+            BarState.value = `bar ${monitor}`;
+        }
+    }]],
+    child: Widget.Stack({
+        transition: 'crossfade',
+        items: [
+            ['bar', Widget.CenterBox({
+                start_widget: Left(),
+                center_widget: Center(),
+                end_widget: Right(),
+            })],
+            ['app-launcher', AppLauncher({monitor})],
+            // ['network-manager', NetworkManager()],
+        ],
+        connections: [[BarState, self => {
+            const bar = BarState.value.split(' ');
+            if(bar[1] !== `${monitor}`) return;
+            const shown = ['bar', 'app-launcher', 'network-manager'].find(
+                pred => pred === bar[0]
+            );
+
+            self.shown = shown ?? 'bar';
+        }]],
     }),
 })
 
