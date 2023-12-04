@@ -58,11 +58,13 @@ export const Bar = ({ monitor } = {monitor: 1}) => Widget.Window({
     monitor,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
-    binds: [['focusable', Focusable, 'value']],
+    binds: [['focusable', Focusable]],
     connections: [['key-press-event', (self, event) => {
+        // @ts-ignore
         if(event.get_keyval()[1] === Gdk.KEY_Escape) {
             Focusable.value = false;
             BarState.value = `bar ${monitor}`;
+            self.focusable = false;
         }
     }]],
     child: Widget.Stack({

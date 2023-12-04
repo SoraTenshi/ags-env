@@ -61,7 +61,6 @@ const list = ({ monitor }) => Widget.Window({
 });
 
 export const AppLauncher = ({ monitor }) => {
-  Focusable.value = true;
   return Widget.Box({
     children: [
       Widget.Box({
@@ -100,7 +99,10 @@ export const AppLauncher = ({ monitor }) => {
           [FOUND_ITEMS, _ => {
             App.add_window(list(monitor));
           }],
-          [BarState, _ => current_monitor = monitor],
+          [BarState, _ => {
+            current_monitor = monitor;
+            Focusable.value = true;
+          }],
         ],
       }),
     ]
