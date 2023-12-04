@@ -12,17 +12,15 @@ const APP_LAUNCHER = 'app-items';
 
 const FOUND_ITEMS = Variable([]);
 
-let current_monitor = 0;
+let current_monitor = -1;
 
 const AppItem = app => Widget.Button({
   on_clicked: () => {
     BarState.value = `bar ${current_monitor}`;
-    Focusable.value = false;
     app.launch();
   },
   on_primary_click: () => {
     BarState.value = `bar ${current_monitor}`;
-    Focusable.value = false;
     app.launch();
   },
   setup: self => self['app'] = app,
@@ -61,51 +59,46 @@ const list = ({ monitor }) => Widget.Window({
 });
 
 export const AppLauncher = ({ monitor }) => {
-  return Widget.Box({
-    children: [
-      Widget.Box({
-        class_name: 'pre-search',
-        child: MaterialIcon({ icon: '\ue037', size: '1.8rem' })
+  return Widget.CenterBox({
+    start_widget: Widget.Box({
+      class_name: 'pre-search',
+      child: MaterialIcon({ icon: '\ue037', size: '1.8rem' })
+    }),
+    center_widget: Widget.Entry({
+      class_name: 'search',
+      placeholder_text: "Enter name of Application:",
+      text: '...',
+
+      on_accept: ({ text }) => {
+        const list = Applications.query(text ?? '');
+        if (list.length > 0) {
+          App.toggleWindow('search-bar');
+          list[0].launch();
+          BarState.value = 'bar';
+          App.closeWindow(APP_LAUNCHER);
+        }
+      },
+
+      on_change: ({ text }) => FOUND_ITEMS.value.map(item => {
+        // @ts-ignore
+        item['visible'] = (item['app'].toLowerCase()).match(text.toLowerCase());
       }),
-      Widget.Entry({
-        class_name: 'search',
-        placeholder_text: "Enter name of Application:",
-        text: '...',
 
-        on_accept: ({ text }) => {
-          const list = Applications.query(text ?? '');
-          if (list.length > 0) {
-            App.toggleWindow('search-bar');
-            list[0].launch();
-            BarState.value = 'bar';
-            App.closeWindow(APP_LAUNCHER);
-          }
-        },
+      connections: [
+        // @ts-ignore
+        [App, (self, name, visible) => {
+          if (name !== APP_LAUNCHER) return;
 
-        on_change: ({ text }) => FOUND_ITEMS.value.map(item => {
           // @ts-ignore
-          item['visible'] = item['app'].match(text);
-        }),
-
-        connections: [
-          // @ts-ignore
-          [App, (self, name, visible) => {
-            if (name !== APP_LAUNCHER) return;
-
-            // @ts-ignore
-            FOUND_ITEMS.value = Applications.list.map(AppItem);
-            self.text = '';
-          }],
-          [FOUND_ITEMS, _ => {
-            App.add_window(list(monitor));
-          }],
-          [BarState, _ => {
-            current_monitor = monitor;
-            Focusable.value = true;
-          }],
-        ],
-      }),
-    ]
+          FOUND_ITEMS.value = Applications.list.map(AppItem);
+          self.text = '';
+        }],
+        [FOUND_ITEMS, _ => {
+          App.add_window(list(monitor));
+        }],
+        [BarState, _ => current_monitor = monitor],
+      ],
+    }),
   });
 }
 

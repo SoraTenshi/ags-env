@@ -82,14 +82,15 @@
 }
 
 .pre-search {
-  min-width: 50px;
   background-color: #7aa2f7;
   color: #24283b;
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-left: 5px;
 }
 
 .search {
+  min-width: 1860px;
   background-color: #24283b;
   margin-left: 5px;
   margin-top: 5px;
