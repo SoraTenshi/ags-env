@@ -5,11 +5,10 @@ import { Media } from './modules/media.js';
 import { SysTray } from './modules/systray.js';
 import { Weather } from './modules/weather.js';
 import { Connection } from './modules/network.js';
-import { AppLauncher } from './modules/applications.js';
+import { AppLauncher, List } from './modules/applications.js';
 
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 
 import Gdk from 'gi://Gdk';
 
@@ -58,6 +57,9 @@ export const Bar = ({ monitor } = { monitor: 1 }) => Widget.Window({
   connections: [['key-press-event', (self, event) => {
     // @ts-ignore
     if (event.get_keyval()[1] === Gdk.KEY_Escape) {
+      try {
+        App.removeWindow(`app-items-${monitor}`);
+      } catch (_) {}
       BarState.value = `bar ${monitor}`;
       self.focusable = false;
     }
@@ -98,6 +100,9 @@ const Monitors = () => {
 
 export default {
   style: `${App.configDir}/bar/style.css`,
-  windows: [Monitors().map((_, i) => Bar({ monitor: i }))],
+  windows: [
+    Monitors().map((_, i) => Bar({ monitor: i })),
+    // Monitors().map((_, i) => List({ monitor: i })),
+  ],
 }
 

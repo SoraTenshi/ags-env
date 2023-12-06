@@ -98,6 +98,14 @@
   margin-bottom: 5px;
 }
 
+.app-title {
+  margin-left: 45px;
+}
+
+.app-list {
+  background-color: #24283b;
+}
+
 tooltip {
   background-color: #24283b;
   color: #c0caf5;
