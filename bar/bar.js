@@ -66,7 +66,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => Widget.Window({
   }],
   [BarState, self => {
     const bar_state = BarState.value.split(' ');
-    if (`${monitor}` === bar_state[1]) self.focusable = BarState.value !== bar_state[0];
+    if (`${monitor}` === bar_state[1]) self.focusable = 'bar' !== bar_state[0];
   }]],
   child: Widget.Stack({
     transition: 'crossfade',

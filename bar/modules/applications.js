@@ -80,35 +80,34 @@ export const AppLauncher = ({ monitor }) => {
         }
       },
 
-      on_change: entry => {
-        const fzf = new Fzf(Applications.list.map(AppItem), {
-          selector: item => item.app.name,
-          tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
-        });
-        const text = entry.text;
-        // clear the list..
-        const names = [];
-        const fzfResults = fzf.find(text);
-        fzfResults.forEach((entry, index) => {
-          const nameChars = entry.item.app.name.normalize().split('');
-          const nameMarkup = nameChars.map((char, i) => {
-            if (entry.positions.has(i))
-              return `<span foreground="#bb9af7">${char}</span>`;
-            else
-              return char;
-          }).join('');
-          names[index] = nameMarkup;
-        });
-        // @ts-ignore
-        FOUND_ITEMS.value = fzfResults.map((e, i) => {
-          const appItem = AppItem(e.item);
-          // @ts-ignore
-          appItem.children[0].label = names[i];
-          return appItem;
-        });
-      },
-
       connections: [
+        ['notify::text', entry => {
+          const fzf = new Fzf(Applications.list.map(AppItem), {
+            selector: item => item.app.name,
+            tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
+          });
+          const text = entry.text;
+          // clear the list..
+          const names = [];
+          const fzfResults = fzf.find(text);
+          fzfResults.forEach((entry, index) => {
+            const nameChars = entry.item.app.name.normalize().split('');
+            const nameMarkup = nameChars.map((char, i) => {
+              if (entry.positions.has(i))
+                return `<span foreground="#bb9af7">${char}</span>`;
+              else
+                return char;
+            }).join('');
+            names[index] = nameMarkup;
+          });
+          // @ts-ignore
+          FOUND_ITEMS.value = fzfResults.map((e, i) => {
+            const appItem = AppItem(e.item);
+            // @ts-ignore
+            appItem.children[0].label = names[i];
+            return appItem;
+          });
+        }],
         // @ts-ignore
         [App, (self, name, visible) => {
           if (name !== `${APP_LAUNCHER}-${current_monitor}` || !visible) return;
