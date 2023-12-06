@@ -40,6 +40,11 @@
   background-color: transparent;
 }
 
+.item-box {
+  font-size: 1.4rem;
+  color: #c0caf5;
+}
+
 .workspaces button.active {
   margin-bottom: 5px;
 }

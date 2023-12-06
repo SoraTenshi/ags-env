@@ -18,7 +18,6 @@ let current_monitor = -1;
 const AppItem = app => Widget.Box({
   setup: self => self['app'] = app,
   class_name: 'app-item',
-  vpack: 'start',
   vertical: true,
   vexpand: true,
   children: [Widget.Label({
@@ -39,15 +38,19 @@ export const List = ({ monitor }) => {
     class_name: 'app-list',
     name: thisName,
     child: Widget.Box({
+      css: 'min-height: 400px',
       vertical: true,
       children: [
         Widget.Scrollable({
           hscroll: 'never',
           child: Widget.Box({
             vertical: true,
-            vexpand: true,
+            class_name: 'item-box',
+            vpack: 'start',
+            children: FOUND_ITEMS.value,
             connections: [[FOUND_ITEMS, self => {
-              self.children = FOUND_ITEMS.value.slice(0, 15);
+              FOUND_ITEMS.value.length = 15;
+              self.children = FOUND_ITEMS.value;
             }]],
           }),
         })
@@ -57,10 +60,6 @@ export const List = ({ monitor }) => {
 }
 
 export const AppLauncher = ({ monitor }) => {
-  const fzf = new Fzf(Applications.list.map(AppItem), {
-    selector: item => item.app.name,
-    tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
-  });
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
@@ -74,7 +73,7 @@ export const AppLauncher = ({ monitor }) => {
       on_accept: ({ text }) => {
         const list = Applications.query(text ?? '');
         if (list.length > 0) {
-          // App.toggleWindow('search-bar');
+          // FOUND_ITEMS.value = [];
           list[0].launch();
           BarState.value = `bar ${monitor}`;
           App.removeWindow(`${APP_LAUNCHER}-${monitor}`);
@@ -82,9 +81,12 @@ export const AppLauncher = ({ monitor }) => {
       },
 
       on_change: entry => {
+        const fzf = new Fzf(Applications.list.map(AppItem), {
+          selector: item => item.app.name,
+          tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
+        });
         const text = entry.text;
         // clear the list..
-        FOUND_ITEMS.value = [];
         const names = [];
         const fzfResults = fzf.find(text);
         fzfResults.forEach((entry, index) => {
