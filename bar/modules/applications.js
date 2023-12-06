@@ -13,13 +13,13 @@ import '../bar.js';
 
 const APP_LAUNCHER = 'app-items';
 const SELECTION = Variable(0);
-const FOUND_ITEMS = Variable([]);
+const FOUND_ITEMS = [Variable([])];
 
 let current_monitor = -1;
 
 const AppItem = app => Widget.Box({
   setup: self => self['app'] = app,
-  class_name: 'app-item',
+  class_name: 'app-unfocused',
   vertical: true,
   vexpand: true,
   children: [Widget.Label({
@@ -34,6 +34,8 @@ export const List = ({ monitor }) => {
   const thisName = `${APP_LAUNCHER}-${monitor}`;
   return Widget.Window({
     monitor,
+    visible: false,
+    popup: true,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'normal',
     class_name: 'app-list',
@@ -47,10 +49,9 @@ export const List = ({ monitor }) => {
             vertical: true,
             class_name: 'item-box',
             vpack: 'start',
-            children: FOUND_ITEMS.value,
-            connections: [[FOUND_ITEMS, self => {
-              FOUND_ITEMS.value.length = 15;
-              self.children = FOUND_ITEMS.value;
+            connections: [[FOUND_ITEMS[monitor], self => {
+              FOUND_ITEMS[monitor].value.length = 13;
+              self.children = FOUND_ITEMS[monitor].value;
             }]],
           }),
         })
@@ -67,34 +68,39 @@ export const AppLauncher = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-
       on_accept: (self) => {
-        const list = Applications.query(self.text ?? '');
+        const text = FOUND_ITEMS[monitor].value[SELECTION.value].app.name;
+        const list = Applications.query(text ?? '');
         if (list.length > 0) {
-          list[SELECTION.value].launch();
+          list[0].launch();
           SELECTION.value = 0;
-          FOUND_ITEMS.value.length = 0;
+          FOUND_ITEMS[monitor].value.length = 0;
           BarState.value = `bar ${monitor}`;
-          App.removeWindow(`${APP_LAUNCHER}-${monitor}`);
-          self.text = '';
+          App.closeWindow(`${APP_LAUNCHER}-${monitor}`);
         }
       },
 
       connections: [
         ['key-press-event', (_, event) => {
+          // @ts-ignore
           const first = event.get_keyval()[1];
           // @ts-ignore
-          if (first === Gdk.KEY_Tab) {
-            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #24283b';
+          if (first === Gdk.KEY_Tab || first == Gdk.KEY_Down) {
+            if(FOUND_ITEMS[monitor].value.length <= SELECTION.value + 1) return;
+            // @ts-ignore
+            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value += 1;
-            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #33467c';
+            // @ts-ignore
+            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-focused';
             // @ts-ignore
           }
-          if (first === 65056) { // Shift + Tab
+          if (first === 65056 || first === Gdk.KEY_Up) { // Shift + Tab
             if (SELECTION.value === 0) return;
-            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #24283b';
+            // @ts-ignore
+            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value -= 1;
-            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #33467c';
+            // @ts-ignore
+            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-focused';
           }
         }],
         ['notify::text', entry => {
@@ -110,19 +116,20 @@ export const AppLauncher = ({ monitor }) => {
             const nameChars = entry.item.app.name.normalize().split('');
             const nameMarkup = nameChars.map((char, i) => {
               if (entry.positions.has(i))
-                return `<span foreground="#bb9af7">${char}</span>`;
+                return `<span foreground="#e0af68">${char}</span>`;
               else
                 return char;
             }).join('');
             names[index] = nameMarkup;
           });
           // @ts-ignore
-          FOUND_ITEMS.value = fzfResults.map((e, i) => {
-            const appItem = AppItem(e.item);
+          FOUND_ITEMS[monitor].value = fzfResults.map((e, i) => {
+            const appItem = e.item;
             // @ts-ignore
             appItem.children[0].label = names[i];
             if(i === 0) {
-              appItem.css = 'background-color: #33467c';
+              SELECTION.value = 0;
+              appItem.class_name = 'app-focused';
             }
             return appItem;
           });
@@ -137,7 +144,8 @@ export const AppLauncher = ({ monitor }) => {
         [BarState, _ => {
           current_monitor = monitor;
           if (BarState.value === `app-launcher ${monitor}`) {
-            App.addWindow(List({ monitor }));
+            console.log("should open");
+            App.openWindow(`${APP_LAUNCHER}-${monitor}`);
           }
         }],
       ],

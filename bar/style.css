@@ -67,6 +67,14 @@
   font-weight: normal;
 }
 
+.app-focused {
+  background-color: #33467c;
+}
+
+.app-unfocused {
+  background-color: #24283b;
+}
+
 .clock-bg {
   margin-left: 5px;
 }

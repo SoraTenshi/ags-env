@@ -58,7 +58,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => Widget.Window({
     // @ts-ignore
     if (event.get_keyval()[1] === Gdk.KEY_Escape) {
       try {
-        App.removeWindow(`app-items-${monitor}`);
+        App.closeWindow(`app-items-${monitor}`);
       } catch (_) {}
       BarState.value = `bar ${monitor}`;
       self.focusable = false;
@@ -101,8 +101,8 @@ const Monitors = () => {
 export default {
   style: `${App.configDir}/bar/style.css`,
   windows: [
-    Monitors().map((_, i) => Bar({ monitor: i })),
-    // Monitors().map((_, i) => List({ monitor: i })),
+    ...Monitors().map((_, i) => Bar({ monitor: i })),
+    ...Monitors().map((_, i) => List({ monitor: i })),
   ],
 }
 
