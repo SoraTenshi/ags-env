@@ -6,6 +6,8 @@ import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
 import { MaterialIcon } from '../../widgets/icons.js';
 
+import Gdk from 'gi://Gdk';
+
 import '../state.js';
 import '../bar.js';
 
@@ -79,6 +81,22 @@ export const AppLauncher = ({ monitor }) => {
       },
 
       connections: [
+        ['key-press-event', (_, event) => {
+          const first = event.get_keyval()[1];
+          // @ts-ignore
+          if (first === Gdk.KEY_Tab) {
+            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #24283b';
+            SELECTION.value += 1;
+            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #33467c';
+            // @ts-ignore
+          }
+          if (first === 65056) { // Shift + Tab
+            if (SELECTION.value === 0) return;
+            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #24283b';
+            SELECTION.value -= 1;
+            FOUND_ITEMS.value[SELECTION.value].css = 'background-color: #33467c';
+          }
+        }],
         ['notify::text', entry => {
           const fzf = new Fzf(Applications.list.map(AppItem), {
             selector: item => item.app.name,
@@ -103,6 +121,9 @@ export const AppLauncher = ({ monitor }) => {
             const appItem = AppItem(e.item);
             // @ts-ignore
             appItem.children[0].label = names[i];
+            if(i === 0) {
+              appItem.css = 'background-color: #33467c';
+            }
             return appItem;
           });
         }],
