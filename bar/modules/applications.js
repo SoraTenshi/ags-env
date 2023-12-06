@@ -13,9 +13,7 @@ import '../bar.js';
 
 const APP_LAUNCHER = 'app-items';
 const SELECTION = Variable(0);
-const FOUND_ITEMS = [Variable([])];
-
-let current_monitor = -1;
+const FOUND_ITEMS = Variable([]);
 
 const AppItem = app => Widget.Box({
   setup: self => self['app'] = app,
@@ -30,16 +28,14 @@ const AppItem = app => Widget.Box({
   })],
 });
 
-export const List = ({ monitor }) => {
-  const thisName = `${APP_LAUNCHER}-${monitor}`;
+export const List = () => {
   return Widget.Window({
-    monitor,
     visible: false,
     popup: true,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'normal',
     class_name: 'app-list',
-    name: thisName,
+    name: APP_LAUNCHER,
     child: Widget.Box({
       css: 'min-height: 390px',
       children: [
@@ -49,9 +45,9 @@ export const List = ({ monitor }) => {
             vertical: true,
             class_name: 'item-box',
             vpack: 'start',
-            connections: [[FOUND_ITEMS[monitor], self => {
-              FOUND_ITEMS[monitor].value.length = 13;
-              self.children = FOUND_ITEMS[monitor].value;
+            connections: [[FOUND_ITEMS, self => {
+              FOUND_ITEMS.value.length = 13;
+              self.children = FOUND_ITEMS.value;
             }]],
           }),
         })
@@ -69,14 +65,14 @@ export const AppLauncher = ({ monitor }) => {
     center_widget: Widget.Entry({
       class_name: 'search',
       on_accept: (self) => {
-        const text = FOUND_ITEMS[monitor].value[SELECTION.value].app.name;
+        const text = FOUND_ITEMS.value[SELECTION.value].app.name;
         const list = Applications.query(text ?? '');
         if (list.length > 0) {
           list[0].launch();
           SELECTION.value = 0;
-          FOUND_ITEMS[monitor].value.length = 0;
+          FOUND_ITEMS.value.length = 0;
           BarState.value = `bar ${monitor}`;
-          App.closeWindow(`${APP_LAUNCHER}-${monitor}`);
+          App.closeWindow(APP_LAUNCHER);
         }
       },
 
@@ -86,21 +82,21 @@ export const AppLauncher = ({ monitor }) => {
           const first = event.get_keyval()[1];
           // @ts-ignore
           if (first === Gdk.KEY_Tab || first == Gdk.KEY_Down) {
-            if(FOUND_ITEMS[monitor].value.length <= SELECTION.value + 1) return;
+            if(FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
             // @ts-ignore
-            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-unfocused';
+            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value += 1;
             // @ts-ignore
-            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-focused';
+            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
             // @ts-ignore
           }
           if (first === 65056 || first === Gdk.KEY_Up) { // Shift + Tab
             if (SELECTION.value === 0) return;
             // @ts-ignore
-            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-unfocused';
+            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value -= 1;
             // @ts-ignore
-            FOUND_ITEMS[monitor].value[SELECTION.value].class_name = 'app-focused';
+            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
           }
         }],
         ['notify::text', entry => {
@@ -123,7 +119,7 @@ export const AppLauncher = ({ monitor }) => {
             names[index] = nameMarkup;
           });
           // @ts-ignore
-          FOUND_ITEMS[monitor].value = fzfResults.map((e, i) => {
+          FOUND_ITEMS.value = fzfResults.map((e, i) => {
             const appItem = e.item;
             // @ts-ignore
             appItem.children[0].label = names[i];
@@ -136,16 +132,15 @@ export const AppLauncher = ({ monitor }) => {
         }],
         // @ts-ignore
         [App, (self, name, visible) => {
-          if (name !== `${APP_LAUNCHER}-${current_monitor}` || !visible) return;
+          if (name !== APP_LAUNCHER || !visible) return;
 
           self.text = '';
           self.grab_focus();
         }],
         [BarState, _ => {
-          current_monitor = monitor;
           if (BarState.value === `app-launcher ${monitor}`) {
             console.log("should open");
-            App.openWindow(`${APP_LAUNCHER}-${monitor}`);
+            App.openWindow(APP_LAUNCHER);
           }
         }],
       ],
