@@ -10,7 +10,7 @@ import '../state.js';
 import '../bar.js';
 
 const APP_LAUNCHER = 'app-items';
-
+const SELECTION = Variable(0);
 const FOUND_ITEMS = Variable([]);
 
 let current_monitor = -1;
@@ -25,7 +25,6 @@ const AppItem = app => Widget.Box({
     class_name: 'app-title',
     xalign: 0,
     vpack: 'center',
-    truncate: 'end',
   })],
 });
 
@@ -38,8 +37,7 @@ export const List = ({ monitor }) => {
     class_name: 'app-list',
     name: thisName,
     child: Widget.Box({
-      css: 'min-height: 400px',
-      vertical: true,
+      css: 'min-height: 390px',
       children: [
         Widget.Scrollable({
           hscroll: 'never',
@@ -67,16 +65,16 @@ export const AppLauncher = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      placeholder_text: "Enter name of Application:",
-      text: '...',
 
-      on_accept: ({ text }) => {
-        const list = Applications.query(text ?? '');
+      on_accept: (self) => {
+        const list = Applications.query(self.text ?? '');
         if (list.length > 0) {
-          // FOUND_ITEMS.value = [];
-          list[0].launch();
+          list[SELECTION.value].launch();
+          SELECTION.value = 0;
+          FOUND_ITEMS.value.length = 0;
           BarState.value = `bar ${monitor}`;
           App.removeWindow(`${APP_LAUNCHER}-${monitor}`);
+          self.text = '';
         }
       },
 

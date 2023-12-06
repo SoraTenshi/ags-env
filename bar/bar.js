@@ -62,6 +62,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => Widget.Window({
       } catch (_) {}
       BarState.value = `bar ${monitor}`;
       self.focusable = false;
+      self.child.items.find(item => item[0] === 'app-launcher').center_widget.text = '';
     }
   }],
   [BarState, self => {

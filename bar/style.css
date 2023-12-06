@@ -43,6 +43,8 @@
 .item-box {
   font-size: 1.4rem;
   color: #c0caf5;
+  min-width: 1920px;
+  margin-left: 45px;
 }
 
 .workspaces button.active {
@@ -101,10 +103,6 @@
   margin-top: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
-}
-
-.app-title {
-  margin-left: 45px;
 }
 
 .app-list {
