@@ -1,6 +1,9 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
 export const Icon = {
+  general: {
+    question: '\ueb8b',
+  },
   speaker: {
     overamplified: '\uf14b',
     high: '\ue050',

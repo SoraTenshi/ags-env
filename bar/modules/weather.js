@@ -23,7 +23,7 @@ const twelveToTwentyFour = (/** @type {string} */ s) => {
 }
 
 const isDayTime = (/** @type {Date} */ sunset, /** @type {Date} */ sunrise, /** @type {Date} */ now) => {
-  const ret = sunset.getTime() > now.getTime() && now.getTime() > sunrise.getTime();
+  const ret = sunset.getTime() > now.getTime() || now.getTime() > sunrise.getTime();
   return ret;
 }
 
@@ -33,8 +33,10 @@ export const Weather = () => Widget.Box({
   children: [Widget.Label({
     class_name: 'weather-icon',
     css: "font-family: 'Material Symbols Sharp'",
+    label: Icon.general.question,
   }), Widget.Label({
     class_name: 'weather-temp',
+    label: "?°C",
   }),
   ],
   connections: [[thirtyMinutes, self => {
@@ -47,7 +49,7 @@ export const Weather = () => Widget.Box({
         const sunSetDate = weather['weather'][0]['date'];
         let sunRiseDate = weather['weather'][0]['date'];
         sunRiseDate = sunRiseDate.split('-');
-        sunRiseDate = `${sunRiseDate[0]}-${sunRiseDate[1]}-${Number(sunRiseDate[2])+1}`;
+        sunRiseDate = `${sunRiseDate[0]}-${sunRiseDate[1]}-${String(Number(sunRiseDate[2]) + 1).padStart(2, '0')}`;
         const sunSet = twelveToTwentyFour(weather['weather'][0]['astronomy'][0]['sunset']);
         const sunRise = twelveToTwentyFour(weather['weather'][0]['astronomy'][0]['sunrise']);
         const sunset = new Date(`${sunSetDate}T${sunSet}`);

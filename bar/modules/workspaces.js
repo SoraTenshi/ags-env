@@ -7,9 +7,9 @@ import { Widget } from "resource:///com/github/Aylur/ags/widget.js";
 
 export const Workspaces = () => Widget.Box({
   class_name: 'workspace',
-  homogeneous: true,
   child: Widget.Box({
     class_name: 'workspaces',
+    homogeneous: true,
     connections: [[Hyprland.active.workspace, self => {
       self.children = Array.from({ length: 9 }).map((_, n) => {
         const i = (n + 1);
