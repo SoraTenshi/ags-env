@@ -99,6 +99,7 @@
 .pre-search {
   background-color: #7aa2f7;
   color: #24283b;
+  font-size: 1.4rem;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
@@ -107,10 +108,15 @@
 .search {
   min-width: 1860px;
   background-color: #24283b;
+  font-size: 1.3rem;
   margin-left: 5px;
   margin-top: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
+}
+
+.app-title {
+  font-size: 1.3rem;
 }
 
 .app-list {

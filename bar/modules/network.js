@@ -9,14 +9,14 @@ const WifiIndicator = () => Widget.Box({
       css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
       has_tooltip: true,
       binds: [['label', Network.wifi, 'strength', (/** @type {number} */ strength) => {
-        if (strength < 0.1) return Icon.wifi.none;
-        if (strength < 0.26) return Icon.wifi.bad;
-        if (strength < 0.51) return Icon.wifi.low;
-        if (strength < 0.76) return Icon.wifi.normal;
-        if (strength < 1.1) return Icon.wifi.good;
+        if (strength < 10) return Icon.wifi.none;
+        if (strength < 26) return Icon.wifi.bad;
+        if (strength < 51) return Icon.wifi.low;
+        if (strength < 76) return Icon.wifi.normal;
+        if (strength < 110) return Icon.wifi.good;
         else return Icon.wifi.none;
       }]],
-      connections: [[Network.wifi, self => self.tooltip_markup = `Strength: ${Network.wifi.strength * 100}`]],
+      connections: [[Network.wifi, self => self.tooltip_markup = `SSID: ${Network.wifi.ssid + '\n'}Strength: ${Network.wifi.strength}%`]],
     }),
   ],
 });

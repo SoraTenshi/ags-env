@@ -37,7 +37,7 @@ export const List = () => {
     class_name: 'app-list',
     name: APP_LAUNCHER,
     child: Widget.Box({
-      css: 'min-height: 390px',
+      css: `min-height: 395px`,
       children: [
         Widget.Scrollable({
           hscroll: 'never',
@@ -46,7 +46,7 @@ export const List = () => {
             class_name: 'item-box',
             vpack: 'start',
             connections: [[FOUND_ITEMS, self => {
-              FOUND_ITEMS.value.length = 13;
+              FOUND_ITEMS.value.length = 14;
               self.children = FOUND_ITEMS.value;
             }]],
           }),
@@ -65,6 +65,7 @@ export const AppLauncher = ({ monitor }) => {
     center_widget: Widget.Entry({
       class_name: 'search',
       on_accept: (self) => {
+        // @ts-ignore
         const text = FOUND_ITEMS.value[SELECTION.value].app.name;
         const list = Applications.query(text ?? '');
         if (list.length > 0) {
@@ -139,7 +140,6 @@ export const AppLauncher = ({ monitor }) => {
         }],
         [BarState, _ => {
           if (BarState.value === `app-launcher ${monitor}`) {
-            console.log("should open");
             App.openWindow(APP_LAUNCHER);
           }
         }],
