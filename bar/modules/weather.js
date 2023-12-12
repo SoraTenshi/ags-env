@@ -45,7 +45,7 @@ export const Weather = () => Widget.Box({
         const weather = JSON.parse(res);
         const weatherCondition = weather['current_condition'][0];
 
-        const currentTime = twelveToTwentyFour(weatherCondition['localObsDateTime'].substring(11));
+        // const currentTime = twelveToTwentyFour(weatherCondition['localObsDateTime'].substring(11));
         const sunSetDate = weather['weather'][0]['date'];
         let sunRiseDate = weather['weather'][0]['date'];
         sunRiseDate = sunRiseDate.split('-');
@@ -54,7 +54,8 @@ export const Weather = () => Widget.Box({
         const sunRise = twelveToTwentyFour(weather['weather'][0]['astronomy'][0]['sunrise']);
         const sunset = new Date(`${sunSetDate}T${sunSet}`);
         const sunrise = new Date(`${sunRiseDate}T${sunRise}`);
-        const current = new Date(`${sunSetDate}T${currentTime}`);
+        const current = new Date();
+        // const current = new Date(`${sunSetDate}T${currentTime}`);
 
         const isDay = isDayTime(sunset, sunrise, current);
 

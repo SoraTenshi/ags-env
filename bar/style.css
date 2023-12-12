@@ -35,7 +35,7 @@
 }
 
 .song {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   min-width: 300px;
 }
 
@@ -140,7 +140,7 @@ slider {
 }
 
 trough {
-  min-height: 2px;
+  min-height: 8px;
   color: #bb9af7;
 }
 
