@@ -10,9 +10,10 @@
 }
 
 .workspace {
+  margin-top: -10px;
 }
 
-.workspace-btn {
+.workspace-btn#button {
 }
 
 .media {
@@ -43,7 +44,6 @@
 }
 
 .systray {
-  background-color: transparent;
 }
 
 .item-box {
@@ -51,6 +51,12 @@
   color: #c0caf5;
   min-width: 1920px;
   margin-left: 45px;
+}
+
+.current-title {
+  margin-top: 8px;
+  font-size: 0.6rem;
+  margin-left: 10px;
 }
 
 .workspaces button.active {

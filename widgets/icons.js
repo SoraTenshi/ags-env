@@ -75,17 +75,21 @@ export const Icon = {
     poweroff: '\ue646',
   },
   wifi: {
-    'none': '\ue1d0',
-    'bad': '\uebe4',
-    'low': '\uebd6',
-    'normal': '\uebe1',
-    'good': '\ue1d8',
+    none: '\ue1d0',
+    bad: '\uebe4',
+    low: '\uebd6',
+    normal: '\uebe1',
+    good: '\ue1d8',
   },
   workspace: {
-    'active': '\ue146',
-    'inactive': '\ue835',
-    'occupied': '\ue909',
+    active: '\ue146',
+    inactive: '\ue835',
+    occupied: '\ue909',
   },
+  systray: {
+    unhide: '\ue2ea',
+    hide: '\ue5e1',
+  }
 }
 
 export const MaterialIcon = ({ /** @type {string} */ icon, size = '1.0rem' }) => Widget.Label({
