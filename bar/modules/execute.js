@@ -19,9 +19,10 @@ export const Executor = ({ monitor }) => {
     center_widget: Widget.Entry({
       class_name: 'search',
       on_accept: (self) => {
-        execAsync(self.text || '');
-        self.text = '';
-        BarState.value = `bar ${monitor}`;
+        execAsync(self.text || '').finally(() => {
+          self.text = '';
+          BarState.value = `bar ${monitor}`;
+        });
       },
 
       connections: [

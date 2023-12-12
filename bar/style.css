@@ -11,6 +11,7 @@
 
 .workspace {
   margin-top: -10px;
+  margin-left: 5px;
 }
 
 .workspace-btn#button {
@@ -54,12 +55,12 @@
 }
 
 .current-title {
-  margin-top: 8px;
-  font-size: 0.6rem;
+  margin-top: 10px;
+  font-size: 0.7rem;
   margin-left: 10px;
 }
 
-.workspaces button.active {
+.workspaces label.active {
   margin-bottom: 5px;
 }
 

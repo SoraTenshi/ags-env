@@ -29,11 +29,12 @@ export const Media = () => {
         connections: [[Mpris, self => {
           const mplayer = Mpris.players[0];
           if (!mplayer) {
-            self.child["label"] = "[Nothing]";
+            self.child['center_widget']['label'] = "[Nothing]";
+            self.child['start_widget']['label'] = "[Nothing]";
             return;
           }
           const { track_artists, track_title } = mplayer;
-          self.child['center_widget']["label"] = `${track_artists.join(', ')}`;
+          self.child['center_widget']['label'] = `${track_artists.join(', ')}`;
           self.child['start_widget']['label'] = `${track_title}`;
         }]],
       }),

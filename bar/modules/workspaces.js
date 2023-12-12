@@ -22,6 +22,7 @@ export const Workspaces = () => Widget.Box({
       class_name: 'workspaces',
       vexpand: false,
       homogeneous: true,
+      spacing: 10,
       connections: [[Hyprland.active.workspace, self => {
         self.children = Array.from({ length: 9 }).map((_, n) => {
           const i = (n + 1);
@@ -30,15 +31,9 @@ export const Workspaces = () => Widget.Box({
           if (uwu === 'inactive' && currentWs && currentWs['windows'] > 0) {
             uwu = 'occupied';
           }
-          return Widget.Button({
-            vexpand: true,
-            on_clicked: () => execAsync(`hyprctl dispatch workspace ${i}`),
-            child: MaterialIcon({ icon: Icon.workspace[uwu], }),
-            class_name: uwu,
-          });
-        })
-      }
-      ]],
+          return MaterialIcon({ icon: Icon.workspace[uwu], class_name: uwu });
+        });
+      }]],
     }),
   }),
 });
