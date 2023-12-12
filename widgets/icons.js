@@ -89,6 +89,10 @@ export const Icon = {
   systray: {
     unhide: '\ue2ea',
     hide: '\ue5e1',
+  },
+  modes: {
+    search: '\ue037',
+    execute: '\uf866'
   }
 }
 

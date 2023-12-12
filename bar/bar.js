@@ -6,6 +6,7 @@ import { SysTray } from './modules/systray.js';
 import { Weather } from './modules/weather.js';
 import { Connection } from './modules/network.js';
 import { AppLauncher, List } from './modules/applications.js';
+import { Executor } from './modules/execute.js';
 
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
@@ -77,12 +78,13 @@ export const Bar = ({ monitor } = { monitor: 1 }) => Widget.Window({
         end_widget: Right(),
       })],
       ['app-launcher', AppLauncher({ monitor })],
+      ['executor', Executor({ monitor })],
       // ['network-manager', NetworkManager()],
     ],
     connections: [[BarState, self => {
       const bar = BarState.value.split(' ');
       if (bar[1] !== `${monitor}`) return;
-      const shown = ['bar', 'app-launcher', 'network-manager'].find(
+      const shown = ['bar', 'app-launcher', 'executor', 'network-manager'].find(
         pred => pred === bar[0]
       );
 

@@ -1,3 +1,5 @@
+import { Icon } from '../../widgets/icons.js';
+
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
@@ -60,7 +62,7 @@ export const AppLauncher = ({ monitor }) => {
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
-      child: MaterialIcon({ icon: '\ue037', size: '1.8rem' })
+      child: MaterialIcon({ icon: Icon.modes.search, size: '1.8rem' })
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
