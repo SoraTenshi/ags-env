@@ -29,7 +29,13 @@
 }
 
 .artist {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
+  font-style: italic;
+  min-width: 300px;
+}
+
+.song {
+  font-size: 0.8rem;
   min-width: 300px;
 }
 
@@ -134,7 +140,7 @@ slider {
 }
 
 trough {
-  min-height: 10px;
+  min-height: 2px;
   color: #bb9af7;
 }
 

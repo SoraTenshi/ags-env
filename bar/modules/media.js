@@ -9,41 +9,47 @@ export const Media = () => {
     on_primary_click: () => Mpris.getPlayer('')?.playPause(),
     on_scroll_up: () => Mpris.getPlayer('')?.next(),
     on_scroll_down: () => Mpris.getPlayer('')?.previous(),
-    child: Widget.Box({
-      class_name: 'music',
-      child: Widget.Overlay({
-        pass_through: true,
-        child: Widget.Button({
-          on_clicked: () => Mpris.players[0]?.playPause(),
-          child: Widget.Label({
+    child: Widget.Overlay({
+      pass_through: true,
+      child: Widget.Button({
+        on_clicked: () => Mpris.players[0]?.playPause(),
+        child: Widget.CenterBox({
+          vertical: true,
+          start_widget: Widget.Label({
             max_width_chars: 28,
             truncate: 'end',
-            class_name: 'artist'
+            class_name: 'song'
           }),
-          connections: [[Mpris, self => {
-            const mplayer = Mpris.players[0];
-            if (!mplayer) {
-              self.child["label"] = "[Nothing]";
-              return;
-            }
-            const { track_artists, track_title } = mplayer;
-            self.child["label"] = `${track_artists.join(', ')} - ${track_title}`;
-          }]],
+          center_widget: Widget.Label({
+            max_width_chars: 28,
+            truncate: 'end',
+            class_name: 'artist',
+          })
         }),
-        overlays: [Widget.ProgressBar({
-          class_name: 'trackbar',
-          visible: false,
-          connections: [[Mpris, self => {
-            player = Mpris.players[0];
-            self.visible = !!player;
-          }],
-          [1000, self => {
-            if (!player) return;
-            self.visible = !!player;
-            self.value = player.position / player.length;
-          }]],
-        })],
+        connections: [[Mpris, self => {
+          const mplayer = Mpris.players[0];
+          if (!mplayer) {
+            self.child["label"] = "[Nothing]";
+            return;
+          }
+          const { track_artists, track_title } = mplayer;
+          self.child['center_widget']["label"] = `${track_artists.join(', ')}`;
+          self.child['start_widget']['label'] = `${track_title}`;
+        }]],
       }),
-    })
+      overlays: [Widget.ProgressBar({
+        class_name: 'trackbar',
+        visible: false,
+        connections: [[Mpris, self => {
+          player = Mpris.players[0];
+          self.visible = !!player;
+        }],
+        [1000, self => {
+          if (!player) return;
+          self.visible = !!player;
+          self.value = player.position / player.length;
+        }]],
+      })],
+    }),
   });
 };
