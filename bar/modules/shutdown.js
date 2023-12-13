@@ -27,7 +27,7 @@ const labels = [
 ];
 
 const commands = {
-  shutdown: 'shutdown',
+  shutdown: 'shutdown now',
   reboot: 'reboot',
   logout: 'logout',
   sleep: 'sleep',

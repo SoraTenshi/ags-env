@@ -14,9 +14,6 @@
   margin-left: 5px;
 }
 
-.workspace-btn#button {
-}
-
 .media {
   min-width: 300px;
 }
@@ -39,12 +36,6 @@
 .song {
   font-size: 0.9rem;
   min-width: 300px;
-}
-
-.sound {
-}
-
-.systray {
 }
 
 .item-box {
