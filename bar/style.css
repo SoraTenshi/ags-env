@@ -127,6 +127,25 @@
   background-color: #24283b;
 }
 
+.cpu-name {
+  margin-top: 10px;
+  font-size: 0.6rem;
+}
+
+.cpu-val {
+  font-size: 0.8rem;
+  margin-right: 5px;
+}
+
+.mem-name {
+  margin-top: 10px;
+  font-size: 0.6rem;
+}
+
+.mem-val {
+  font-size: 0.8rem;
+}
+
 tooltip {
   background-color: #24283b;
   color: #c0caf5;
