@@ -94,6 +94,35 @@ export const Icon = {
     search: '\ue037',
     execute: '\uf866',
     power: '\ue8ac',
+  },
+  system: {
+    cpu: '\ue30d',
+    memory: '\ue322',
+    disk: '\uf80e',
+  },
+  battery: {
+    '100': '\ue1a4',
+    '90': '\uebd2',
+    '80': '\uebd4',
+    '70': '\uebe2',
+    '60': '\uebdd',
+    '50': '\uebe0',
+    '40': '\uebd9',
+    '30': '\uebd9',
+    '20': '\uebdc',
+    '10': '\uebdc',
+    charging: {
+      '100': '\uf67d', // technically, no charge, but eh  :)
+      '90': '\uf0a7',
+      '80': '\uf0a6',
+      '70': '\uf0a6',
+      '60': '\uf0a5',
+      '50': '\uf0a4',
+      '40': '\uf0a4',
+      '30': '\uf0a3',
+      '20': '\uf0a3',
+      '10': '\ue1a3',
+    }
   }
 }
 
