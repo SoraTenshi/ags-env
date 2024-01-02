@@ -2,14 +2,16 @@
 
 dir="${1:-$HOME/.config/ags}"
 
+# remove tmp
+rm -rf /tmp/ags-config
+
 mkdir -p /tmp/ags-config
 cd /tmp/ags-config
 
 # clone
 echo "cloning ags"
-git clone https://github.com/SoraTenshi/ags.git
+git clone https://github.com/aylur/ags.git
 cd ags
-git fetch && git switch fetch-util
 npm i
 
 # generate

@@ -86,7 +86,6 @@ export const Shutdown = ({ monitor }) => {
       on_accept: _ => {
         // @ts-ignore
         const text = FOUND_ITEMS.value[SELECTION.value]['children'][0]['label'].replaceAll(' ', '').toLowerCase();
-        console.log(text);
         if (text.length > 0) {
           Utils.execAsync(commands[text]).finally(() => {
             SELECTION.value = 0;
@@ -126,7 +125,6 @@ export const Shutdown = ({ monitor }) => {
           // clear the list..
           const names = [];
           const fzfResults = fzf.find(text);
-          console.log(fzfResults);
           fzfResults.forEach((entry, index) => {
             const nameChars = entry.item.split('');
             const nameMarkup = nameChars.map((char, i) => {

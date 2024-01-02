@@ -41,8 +41,8 @@ export const Weather = () => Widget.Box({
   ],
   connections: [[thirtyMinutes, self => {
     Utils.fetch('http://wttr.in/?format=j1')
-      .then(res => {
-        const weather = JSON.parse(res);
+      .then(result => result.json().then(res => {
+        const weather = res;
         const weatherCondition = weather['current_condition'][0];
 
         // const currentTime = twelveToTwentyFour(weatherCondition['localObsDateTime'].substring(11));
@@ -76,7 +76,7 @@ export const Weather = () => Widget.Box({
           `FeelsLike: ${weatherCondition['FeelsLikeC'].replaceAll('+', '')}°C` + '\n' +
           `Humidity: ${weatherCondition['humidity']}%` + '\n' +
           `Weather: ${weatherCondition['weatherDesc'][0]['value']}`;
-      })
+      }))
       .catch(err => console.error(err));
   }]]
 });
