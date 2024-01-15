@@ -27,7 +27,8 @@ export const Media = () => {
           })
         }),
         connections: [[Mpris, self => {
-          const mplayer = Mpris.players[0];
+          const mplayer = Mpris.getPlayer("spotify") || Mpris.players[0];
+
           if (!mplayer) {
             self.child['center_widget']['label'] = "[Nothing]";
             self.child['start_widget']['label'] = "[Nothing]";
