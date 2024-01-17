@@ -3,7 +3,7 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 
 export const Media = () => {
   /** @type {MprisPlayer} */
-  let player = Mpris.players[0];
+  let player = Mpris.getPlayer("spotify") || Mpris.players[0];
   return Widget.EventBox({
     class_name: 'media',
     on_primary_click: () => Mpris.getPlayer('')?.playPause(),
@@ -12,7 +12,7 @@ export const Media = () => {
     child: Widget.Overlay({
       pass_through: true,
       child: Widget.Button({
-        on_clicked: () => Mpris.players[0]?.playPause(),
+        on_clicked: () => (Mpris.getPlayer("spotify") || Mpris.players[0]).playPause(),
         child: Widget.CenterBox({
           vertical: true,
           start_widget: Widget.Label({
@@ -43,7 +43,7 @@ export const Media = () => {
         class_name: 'trackbar',
         visible: false,
         connections: [[Mpris, self => {
-          player = Mpris.players[0];
+          player = Mpris.getPlayer("spotify") || Mpris.players[0];
           self.visible = !!player;
         }],
         [1000, self => {
