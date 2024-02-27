@@ -71,6 +71,24 @@
   font-weight: normal;
 }
 
+.battery {
+  margin-right: 5px;
+}
+
+.battery-icon {
+  font-family: "Material Symbols Sharp";
+  margin-top: 10px;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.battery-val {
+  padding: 5px;
+  margin-top: 1px;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
 .app-focused {
   background-color: #33467c;
 }

@@ -111,6 +111,7 @@ export const Icon = {
     '30': '\uebd9',
     '20': '\uebdc',
     '10': '\uebdc',
+    '0': '\uebdc',
     charging: {
       '100': '\uf67d', // technically, no charge, but eh  :)
       '90': '\uf0a7',
@@ -122,6 +123,7 @@ export const Icon = {
       '30': '\uf0a3',
       '20': '\uf0a3',
       '10': '\ue1a3',
+      '0': '\ue1a3',
     }
   }
 }
