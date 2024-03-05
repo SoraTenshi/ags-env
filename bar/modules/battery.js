@@ -7,6 +7,7 @@ import { Icon } from '../../widgets/icons.js';
 
 export const Battery = () => Widget.Box({
   class_name: 'battery',
+  visible: battery.bind('available'),
   tooltip_markup: battery.bind('percent').as(p => `Current: ${p}%`),
   children: [
     Widget.Label({
