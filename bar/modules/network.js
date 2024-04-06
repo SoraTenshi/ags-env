@@ -8,28 +8,31 @@ const WifiIndicator = () => Widget.Box({
     Widget.Label({
       css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
       has_tooltip: true,
-      binds: [['label', Network.wifi, 'strength', (/** @type {number} */ strength) => {
-        if (strength < 10) return Icon.wifi.none;
-        if (strength < 26) return Icon.wifi.bad;
-        if (strength < 51) return Icon.wifi.low;
-        if (strength < 76) return Icon.wifi.normal;
-        if (strength < 110) return Icon.wifi.good;
-        else return Icon.wifi.none;
-      }]],
-      connections: [[Network.wifi, self => self.tooltip_markup = `SSID: ${Network.wifi.ssid + '\n'}Strength: ${Network.wifi.strength}%`]],
+      setup: self => {
+        self.bind('label', Network.wifi, "strength", (/** @type {number} */ strength) => {
+          if (strength < 10) return Icon.wifi.none;
+          if (strength < 26) return Icon.wifi.bad;
+          if (strength < 51) return Icon.wifi.low;
+          if (strength < 76) return Icon.wifi.normal;
+          if (strength < 110) return Icon.wifi.good;
+          else return Icon.wifi.none;
+        })
+          .hook(Network.wifi, self => self.tooltip_markup = `SSID: ${Network.wifi.ssid + '\n'}Strength: ${Network.wifi.strength}%`);
+      },
     }),
   ],
 });
 
 const WiredIndicator = () => Widget.Label({
   css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
-  binds: [['label', Network.wired, 'internet', internet => {
-    if(internet === "connected") return Icon.wired.power;
-    if(internet === "connecting") return Icon.wired.poweroff;
-    if(internet === "disconnected") return Icon.wired.poweroff;
-    return Icon.wired.poweroff;
-  }]],
-  connections: [[Network.wired, self => self.tooltip_markup = `Connection: ${Network.wired.internet}`]],
+  setup: self => {
+    self.bind('label', Network.wired, 'internet', internet => {
+      if (internet === "connected") return Icon.wired.power;
+      if (internet === "connecting") return Icon.wired.poweroff;
+      if (internet === "disconnected") return Icon.wired.poweroff;
+      return Icon.wired.poweroff;
+    }).hook(Network.wired, self => self.tooltip_markup = `Connection: ${Network.wired.internet}`);
+  },
 });
 
 export const Connection = () => Widget.Box({
@@ -40,7 +43,7 @@ export const Connection = () => Widget.Box({
         ['wifi', WifiIndicator()],
         ['wired', WiredIndicator()],
       ],
-      binds: [['shown', Network, 'primary', p => p || 'wifi']],
+      setup: self => self.bind('shown', Network, 'primary', p => p || 'wifi'),
     }),
   ],
 });

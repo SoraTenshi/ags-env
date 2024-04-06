@@ -12,6 +12,7 @@ export const Battery = () => Widget.Box({
     Widget.Label({
       class_name: 'battery-icon',
       label: Utils.merge([battery.bind('percent'), battery.bind('charging')], (percent, charging) => {
+        // @ts-ignore
         const percentile = percent - (percent % 10) ?? 0;
         return charging ? Icon.battery.charging[`${percentile}`] : Icon.battery[`${percentile}`];
       }),

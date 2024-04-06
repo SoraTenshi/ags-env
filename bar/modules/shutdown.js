@@ -34,7 +34,7 @@ const commands = {
   hibernate: 'systemctl hibernate',
 };
 
-const ShutdownItem = elem => Widget.Box({
+const ShutdownItem = (/** @type {any} */ elem) => Widget.Box({
   class_name: 'app-unfocused',
   vertical: true,
   vexpand: true,
@@ -64,10 +64,12 @@ export const ShutdownList = () => {
             vertical: true,
             class_name: 'item-box',
             vpack: 'start',
-            connections: [[FOUND_ITEMS, self => {
-              FOUND_ITEMS.value.length = 5;
-              self.children = FOUND_ITEMS.value;
-            }]],
+            setup: self => {
+              self.hook(FOUND_ITEMS, self => {
+                FOUND_ITEMS.value.length = 5;
+                self.children = FOUND_ITEMS.value;
+              });
+            },
           }),
         })
       ]
@@ -96,13 +98,13 @@ export const Shutdown = ({ monitor }) => {
         }
       },
 
-      connections: [
-        ['key-press-event', (_, event) => {
+      setup: self => {
+        self.on('key-press-event', (_, event) => {
           // @ts-ignore
           const first = event.get_keyval()[1];
           // @ts-ignore
           if (first === Gdk.KEY_Tab || first == Gdk.KEY_Down) {
-            if(FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
+            if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
             // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value += 1;
@@ -118,14 +120,13 @@ export const Shutdown = ({ monitor }) => {
             // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
           }
-        }],
-        ['notify::text', entry => {
+        }).on('notify::text', entry => {
           const fzf = new Fzf(labels);
           const text = entry.text;
           // clear the list..
           const names = [];
           const fzfResults = fzf.find(text);
-          fzfResults.forEach((entry, index) => {
+          fzfResults.forEach((/** @type {{ item: string; positions: { has: (arg0: any) => any; }; }} */ entry, /** @type {string | number} */ index) => {
             const nameChars = entry.item.split('');
             const nameMarkup = nameChars.map((char, i) => {
               if (entry.positions.has(i))
@@ -136,28 +137,25 @@ export const Shutdown = ({ monitor }) => {
             names[index] = nameMarkup;
           });
           // @ts-ignore
-          FOUND_ITEMS.value = fzfResults.map((e, i) => {
+          FOUND_ITEMS.value = fzfResults.map((/** @type {any} */ _e, /** @type {number} */ i) => {
             const appItem = ShutdownItem(names[i]);
-            if(i === 0) {
+            if (i === 0) {
               SELECTION.value = 0;
               appItem.class_name = 'app-focused';
             }
             return appItem;
           });
-        }],
-        // @ts-ignore
-        [App, (self, name, visible) => {
+        }).hook(App, (self, name, visible) => {
           if (name !== SHUTDOWN || !visible) return;
 
           self.text = '';
           self.grab_focus();
-        }],
-        [BarState, _ => {
+        }).hook(BarState, _ => {
           if (BarState.value === `shutdown ${monitor}`) {
             App.openWindow(SHUTDOWN);
           }
-        }],
-      ],
+        });
+      },
     }),
   });
 }

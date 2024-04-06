@@ -24,15 +24,14 @@ export const Executor = ({ monitor }) => {
         BarState.value = `bar ${monitor}`;
       },
 
-      connections: [
-        // @ts-ignore
-        [App, (self, name, visible) => {
+      setup: self => {
+        self.hook(App, (self, name, visible) => {
           if (name !== EXECUTOR || !visible) return;
 
           self.text = '';
           self.grab_focus();
-        }],
-      ],
+        })
+      },
     }),
   });
 }

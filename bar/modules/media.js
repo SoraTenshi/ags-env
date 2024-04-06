@@ -26,31 +26,38 @@ export const Media = () => {
             class_name: 'artist',
           })
         }),
-        connections: [[Mpris, self => {
-          const mplayer = Mpris.getPlayer("spotify") || Mpris.players[0];
+        setup: self => {
+          self.hook(Mpris, self => {
+            const mplayer = Mpris.getPlayer("spotify") || Mpris.players[0];
 
-          if (!mplayer) {
-            self.child['center_widget']['label'] = "[Nothing]";
-            self.child['start_widget']['label'] = "[Nothing]";
-            return;
-          }
-          const { track_artists, track_title } = mplayer;
-          self.child['center_widget']['label'] = `${track_artists.join(', ')}`;
-          self.child['start_widget']['label'] = `${track_title}`;
-        }]],
+            if (!mplayer) {
+              // @ts-ignore
+              self.child['center_widget']['label'] = "[Nothing]";
+              // @ts-ignore
+              self.child['start_widget']['label'] = "[Nothing]";
+              return;
+            }
+            const { track_artists, track_title } = mplayer;
+            // @ts-ignore
+            self.child['center_widget']['label'] = `${track_artists.join(', ')}`;
+            // @ts-ignore
+            self.child['start_widget']['label'] = `${track_title}`;
+          });
+        },
       }),
       overlays: [Widget.ProgressBar({
         class_name: 'trackbar',
         visible: false,
-        connections: [[Mpris, self => {
-          player = Mpris.getPlayer("spotify") || Mpris.players[0];
-          self.visible = !!player;
-        }],
-        [1000, self => {
-          if (!player) return;
-          self.visible = !!player;
-          self.value = player.position / player.length;
-        }]],
+        setup: self => {
+          self.hook(Mpris, self => {
+            player = Mpris.getPlayer("spotify") || Mpris.players[0];
+            self.visible = !!player;
+          }).poll(1000, self => {
+              if (!player) return;
+              self.visible = !!player;
+              self.value = player.position / player.length;
+            });
+        },
       })],
     }),
   });

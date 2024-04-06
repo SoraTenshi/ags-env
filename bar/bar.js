@@ -69,25 +69,27 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
     monitor,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
-    connections: [['key-press-event', (self, event) => {
-      // @ts-ignore
-      if (event.get_keyval()[1] === Gdk.KEY_Escape) {
-        try {
-          for (const [_, name] of Object.entries(barStates)) {
-            const window = App.getWindow(name);
-            if (window?.is_visible()) {
-              App.closeWindow(name);
+    setup: self => {
+      self.on('key-press-event', (self, event) => {
+        // @ts-ignore
+        if (event.get_keyval()[1] === Gdk.KEY_Escape) {
+          try {
+            for (const [_, name] of Object.entries(barStates)) {
+              const window = App.getWindow(name);
+              if (window?.is_visible()) {
+                App.closeWindow(name);
+              }
             }
-          }
-        } catch (_) { }
-        BarState.value = `bar ${monitor}`;
-        self.focusable = false;
-      }
-    }],
-    [BarState, self => {
-      const bar_state = BarState.value.split(' ');
-      if (`${monitor}` === bar_state[1]) self.focusable = 'bar' !== bar_state[0];
-    }]],
+          } catch (_) { }
+          BarState.value = `bar ${monitor}`;
+          self.focusable = false;
+        }
+      });
+      self.hook(BarState, self => {
+        const bar_state = BarState.value.split(' ');
+        if (`${monitor}` === bar_state[1]) self.focusable = 'bar' !== bar_state[0];
+      });
+    },
     child: Widget.Stack({
       transition: 'crossfade',
       items: [
@@ -101,15 +103,17 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
         ['shutdown', Shutdown({ monitor })],
         // ['network-manager', NetworkManager()],
       ],
-      connections: [[BarState, self => {
-        const bar = BarState.value.split(' ');
-        if (bar[1] !== `${monitor}`) return;
-        const shown = Object.keys(barStates).find(
-          pred => pred === bar[0]
-        );
+      setup: self => {
+        self.hook(BarState, self => {
+          const bar = BarState.value.split(' ');
+          if (bar[1] !== `${monitor}`) return;
+          const shown = Object.keys(barStates).find(
+            pred => pred === bar[0]
+          );
 
-        self.shown = shown ?? 'bar';
-      }]],
+          self.shown = shown ?? 'bar';
+        });
+      },
     }),
   });
 }

@@ -11,14 +11,18 @@ export const SysTray = () => {
 
   const TrayItems = () => Widget.Box({
     class_name: 'systray',
-    connections: [[SystemTray, self => {
+    setup: self => {
+      self.hook(SystemTray, self => {
       self.children = SystemTray.items.map(item => Widget.Button({
-        child: Widget.Icon({ binds: [['icon', item, 'icon']] }),
+        child: Widget.Icon({ 
+          setup: s => s.bind('icon', item, 'icon'),
+        }),
         on_primary_click: (_, event) => item.activate(event),
         on_secondary_click: (_, event) => item.openMenu(event),
-        binds: [['tooltip-markup', item, 'tooltip-markup']],
+        setup: s => s.bind('tooltip_markup', item, 'tooltip_markup'),
       }));
-    }]],
+    });
+    },
   });
 
   const trayRevealer = Widget.Revealer({
