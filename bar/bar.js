@@ -92,17 +92,17 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
     },
     child: Widget.Stack({
       transition: 'crossfade',
-      items: [
-        ['bar', Widget.CenterBox({
+      children: {
+        'bar': Widget.CenterBox({
           start_widget: Left(),
           center_widget: Center(),
           end_widget: Right(),
-        })],
-        ['app-launcher', AppLauncher({ monitor })],
-        ['executor', Executor({ monitor })],
-        ['shutdown', Shutdown({ monitor })],
+        }),
+        'app-launcher': AppLauncher({ monitor }),
+        'executor': Executor({ monitor }),
+        'shutdown': Shutdown({ monitor }),
         // ['network-manager', NetworkManager()],
-      ],
+      },
       setup: self => {
         self.hook(BarState, self => {
           const bar = BarState.value.split(' ');

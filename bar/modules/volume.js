@@ -41,14 +41,14 @@ export const Volume = ( /** @type {string} */ type) => {
           }),
         }),
         Widget.Stack({
-          items: [
+          children: {
             // tuples of [string, Widget]
-            ['101', MaterialIcon({ icon: Icon[type].overamplified, size: '1.2rem' })],
-            ['67', MaterialIcon({ icon: Icon[type].high, size: '1.2rem' })],
-            ['34', MaterialIcon({ icon: Icon[type].medium, size: '1.2rem' })],
-            ['1', MaterialIcon({ icon: Icon[type].low, size: '1.2rem' })],
-            ['0', MaterialIcon({ icon: Icon[type].muted, size: '1.2rem' })],
-          ],
+            '101': MaterialIcon({ icon: Icon[type].overamplified, size: '1.2rem' }),
+            '67': MaterialIcon({ icon: Icon[type].high, size: '1.2rem' }),
+            '34': MaterialIcon({ icon: Icon[type].medium, size: '1.2rem' }),
+            '1': MaterialIcon({ icon: Icon[type].low, size: '1.2rem' }),
+            '0': MaterialIcon({ icon: Icon[type].muted, size: '1.2rem' }),
+          },
           setup: self => {
             self.hook(Audio, self => {
               if (!Audio[type])
@@ -62,6 +62,7 @@ export const Volume = ( /** @type {string} */ type) => {
               const show = [101, 67, 34, 1, 0].find(
                 threshold => threshold <= Audio[type].volume * 100);
 
+              // @ts-ignore
               self.shown = `${show}`;
             }, `${type}-changed`);
           },

@@ -50,11 +50,11 @@ const ShutdownItem = (/** @type {any} */ elem) => Widget.Box({
 export const ShutdownList = () => {
   return Widget.Window({
     visible: false,
-    popup: true,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'normal',
     class_name: 'app-list',
     name: SHUTDOWN,
+    setup: self => self.keybind('Escape', () => App.closeWindow(SHUTDOWN)),
     child: Widget.Box({
       css: `min-height: 145px`,
       children: [

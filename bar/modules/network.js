@@ -39,10 +39,10 @@ export const Connection = () => Widget.Box({
   class_name: 'network',
   children: [
     Widget.Stack({
-      items: [
-        ['wifi', WifiIndicator()],
-        ['wired', WiredIndicator()],
-      ],
+      children: {
+        'wifi': WifiIndicator(),
+        'wired': WiredIndicator(),
+      },
       setup: self => self.bind('shown', Network, 'primary', p => p || 'wifi'),
     }),
   ],

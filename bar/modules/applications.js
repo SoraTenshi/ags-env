@@ -33,11 +33,11 @@ const AppItem = app => Widget.Box({
 export const AppList = () => {
   return Widget.Window({
     visible: false,
-    popup: true,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'normal',
     class_name: 'app-list',
     name: APP_LAUNCHER,
+    setup: self => self.keybind('Escape', () => App.closeWindow(APP_LAUNCHER)),
     child: Widget.Box({
       css: `min-height: 395px`,
       children: [
