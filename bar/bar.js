@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Workspaces } from './modules/workspaces.js';
 import { Volume } from './modules/volume.js';
 import { Clock } from './modules/clock.js';
@@ -70,9 +71,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
     setup: self => {
-      self.on('key-press-event', (self, event) => {
-        // @ts-ignore
-        if (event.get_keyval()[1] === Gdk.KEY_Escape) {
+      self.keybind("Escape", () => {
           try {
             for (const [_, name] of Object.entries(barStates)) {
               const window = App.getWindow(name);
@@ -82,12 +81,11 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
             }
           } catch (_) { }
           BarState.value = `bar ${monitor}`;
-          self.focusable = false;
-        }
-      });
-      self.hook(BarState, self => {
+          self.keymode = "none";
+      })
+      .hook(BarState, self => {
         const bar_state = BarState.value.split(' ');
-        if (`${monitor}` === bar_state[1]) self.focusable = 'bar' !== bar_state[0];
+        if (`${monitor}` === bar_state[1]) self.keymode = ('bar' !== bar_state[0] ? "on-demand" : "none");
       });
     },
     child: Widget.Stack({
@@ -121,16 +119,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
 /**
   * @returns {unknown[]} The amount of monitors
   */
-const Monitors = () => {
+export const Monitors = () => {
   return JSON.parse(exec("hyprctl monitors -j"));
-}
-
-export default {
-  style: `${App.configDir}/bar/style.css`,
-  windows: [
-    ...Monitors().map((_, i) => Bar({ monitor: i })),
-    AppList(),
-    ShutdownList(),
-  ],
 }
 
