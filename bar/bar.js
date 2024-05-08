@@ -11,6 +11,7 @@ import { Shutdown, ShutdownList } from './modules/shutdown.js';
 import { Executor } from './modules/execute.js';
 import { Cpu, Memory } from './modules/system.js';
 import { Battery } from './modules/battery.js';
+import { RunCat } from './modules/runcat.js'; 
 
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
@@ -46,6 +47,7 @@ const Right = () => Widget.Box({
   hpack: 'end',
   children: [
     Connection(),
+    RunCat(),
     Cpu(),
     Memory(),
     Weather(),

@@ -98,48 +98,51 @@ export const AppLauncher = ({ monitor }) => {
 
       setup: self => {
         // @ts-ignore
-        self.keybind("Tab", scroll_down)
-        .keybind("Down", scroll_down)
-        .keybind(["SHIFT"], "Tab", scroll_up)
-        .keybind("Up", scroll_up)
-        .on('notify::text', entry => {
-          const fzf = new Fzf(Applications.list.map(AppItem), {
-            selector: item => item.app.name,
-            tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
-          });
-          const text = entry.text;
-          // clear the list..
-          const names = [];
-          const fzfResults = fzf.find(text);
-          fzfResults.forEach((entry, index) => {
-            const nameChars = entry.item.app.name.normalize().split('');
-            const nameMarkup = nameChars.map((char, i) => {
-              if (entry.positions.has(i))
-                return `<span foreground="#e0af68">${char}</span>`;
-              else
-                return char;
-            }).join('');
-            names[index] = nameMarkup;
-          });
-          // @ts-ignore
-          FOUND_ITEMS.value = fzfResults.map((e, i) => {
-            const appItem = e.item;
+        self
+          .keybind("Tab", scroll_down)
+          .keybind("Down", scroll_down)
+          .keybind(["SHIFT"], "Tab", scroll_up)
+          .keybind("Up", scroll_up)
+          .on('notify::text', entry => {
+            const fzf = new Fzf(Applications.list.map(AppItem), {
+              selector: item => item.app.name,
+              tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
+            });
+            const text = entry.text;
+            // clear the list..
+            const names = [];
+            const fzfResults = fzf.find(text);
+            fzfResults.forEach((entry, index) => {
+              const nameChars = entry.item.app.name.normalize().split('');
+              const nameMarkup = nameChars.map((char, i) => {
+                if (entry.positions.has(i))
+                  return `<span foreground="#e0af68">${char}</span>`;
+                else
+                  return char;
+              }).join('');
+              names[index] = nameMarkup;
+            });
             // @ts-ignore
-            appItem.children[0].label = names[i];
-            if (i === 0) {
-              SELECTION.value = 0;
-              appItem.class_name = 'app-focused';
-            }
-            return appItem;
-          });
-        }).hook(App, (self, name, visible) => {
-          if (name !== APP_LAUNCHER || !visible) return;
+            FOUND_ITEMS.value = fzfResults.map((e, i) => {
+              const appItem = e.item;
+              // @ts-ignore
+              appItem.children[0].label = names[i];
+              if (i === 0) {
+                SELECTION.value = 0;
+                appItem.class_name = 'app-focused';
+              }
+              return appItem;
+            });
+          })
+          .hook(App, (self, name, visible) => {
+            if (name !== APP_LAUNCHER || !visible) return;
 
-          self.text = '';
-          self.grab_focus();
-        }).hook(BarState, _ => {
-          if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
-        });
+            self.text = '';
+            self.grab_focus();
+          })
+          .hook(BarState, _ => {
+            if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
+          });
       }
     }),
   });
