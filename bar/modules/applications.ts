@@ -1,36 +1,27 @@
 import { Icon } from 'widgets/icons';
+import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
 import { MaterialIcon } from 'widgets/icons';
+
 import { BarState } from '../state';
 
-import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
-import { Application } from 'types/service/applications';
-
-const applications = await Service.import('applications');
+const applications =  await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
-const SELECTION = Variable<number>(0);
-const FOUND_ITEMS = Variable<AppItem[]>([]);
+const SELECTION = Variable<any>(0);
+const FOUND_ITEMS = Variable<any>([]);
 
-class AppItem {
-  box: Widget.Box;
-  app: Application;
-
-  constructor(app: Application) {
-    this.app = app;
-    this.box = Widget.Box({
-      setup: self => self['app'] = app,
-      class_name: 'app-unfocused',
-      vertical: true,
-      vexpand: true,
-      children: [Widget.Label({
-        use_markup: true,
-        class_name: 'app-title',
-        xalign: 0,
-        vpack: 'center',
-      })],
-    })
-  }
-}
+const AppItem = (app: any) => Widget.Box({
+  setup: self => self['app'] = app,
+  class_name: 'app-unfocused',
+  vertical: true,
+  vexpand: true,
+  children: [Widget.Label({
+    use_markup: true,
+    class_name: 'app-title',
+    xalign: 0,
+    vpack: 'center',
+  })],
+});
 
 export const AppList = () => {
   return Widget.Window({
@@ -52,7 +43,7 @@ export const AppList = () => {
             setup: self => {
               self.hook(FOUND_ITEMS, self => {
                 FOUND_ITEMS.value.length = 14;
-                self.children = FOUND_ITEMS.value.map(val => val.box);
+                self.children = FOUND_ITEMS.value;
               });
             },
           }),
@@ -64,16 +55,16 @@ export const AppList = () => {
 
 const scroll_down = () => {
   if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
-  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-unfocused';
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
   SELECTION.value += 1;
-  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-focused';
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
 }
 
 const scroll_up = () => {
   if (SELECTION.value === 0) return;
-  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-unfocused';
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
   SELECTION.value -= 1;
-  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-focused';
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
 }
 
 export const AppLauncher = ({ monitor }) => {
@@ -84,7 +75,8 @@ export const AppLauncher = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      on_accept: () => {
+      on_accept: _ => {
+        // @ts-ignore
         const text = FOUND_ITEMS.value[SELECTION.value].app.name;
         const list = applications.query(text ?? '');
         if (list.length > 0) {
@@ -97,21 +89,22 @@ export const AppLauncher = ({ monitor }) => {
       },
 
       setup: self => {
+        // @ts-ignore
         self
           .keybind("Tab", scroll_down)
           .keybind("Down", scroll_down)
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
           .on('notify::text', entry => {
-            const fzf = new Fzf(applications.list.map((value: Application,) => new AppItem(value), {
-              selector: (item: AppItem) => item.app.name,
-              tieBreaker: [(a: AppItem, b: AppItem,) => b.app['_frequency'] - a.app['_frequency']]
-            }));
+            const fzf = new Fzf(applications.list.map(AppItem), {
+              selector: (item: any) => item.app.name,
+              tieBreaker: [(a: any, b: any,) => b.item.app._frequency - a.item.app._frequency]
+            });
             const text = entry.text;
             // clear the list..
             const names: string[] = [];
             const fzfResults = fzf.find(text);
-            fzfResults.forEach((entry: { item: { app: { name: string; }; }; positions: { has: (arg0: number) => boolean; }; }, index: number) => {
+            fzfResults.forEach((entry: any, index: number) => {
               const nameChars = entry.item.app.name.normalize().split('');
               const nameMarkup = nameChars.map((char: string, i: number) => {
                 if (entry.positions.has(i))
@@ -121,12 +114,14 @@ export const AppLauncher = ({ monitor }) => {
               }).join('');
               names[index] = nameMarkup;
             });
-            FOUND_ITEMS.value = fzfResults.map((e: { item: AppItem; }, i: number) => {
+            // @ts-ignore
+            FOUND_ITEMS.value = fzfResults.map((e: any, i: number) => {
               const appItem = e.item;
-              appItem.box.children[0].label = names[i];
+              // @ts-ignore
+              appItem.children[0].label = names[i];
               if (i === 0) {
                 SELECTION.value = 0;
-                appItem.box.class_name = 'app-focused';
+                appItem.class_name = 'app-focused';
               }
               return appItem;
             });
@@ -137,7 +132,7 @@ export const AppLauncher = ({ monitor }) => {
             self.text = '';
             self.grab_focus();
           })
-          .hook(BarState, () => {
+          .hook(BarState, _ => {
             if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
           });
       }
