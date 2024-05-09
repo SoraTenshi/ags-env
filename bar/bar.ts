@@ -1,16 +1,16 @@
-import { AppLauncher } from 'modules/applications';
-import { Battery } from 'modules/battery';
-import { Clock } from 'modules/clock';
-import { Connection } from 'modules/network';
-import { Cpu, Memory } from 'modules/system';
-import { Executor } from 'modules/execute';
-import { Media } from 'modules/media';
-import { RunCat } from 'modules/runcat';
-import { Shutdown } from 'modules/shutdown';
-import { SysTray } from 'modules/systray';
-import { Volume } from 'modules/volume';
-import { Weather } from 'modules/weather';
-import { Workspaces } from 'modules/workspaces';
+import { AppLauncher } from './modules/applications';
+import { Battery } from './modules/battery';
+import { Clock } from './modules/clock';
+import { Connection } from './modules/network';
+import { Cpu, Memory } from './modules/system';
+import { Executor } from './modules/execute';
+import { Media } from './modules/media';
+import { RunCat } from './modules/runcat';
+import { Shutdown } from './modules/shutdown';
+import { SysTray } from './modules/systray';
+import { Volume } from './modules/volume';
+import { Weather } from './modules/weather';
+import { Workspaces } from './modules/workspaces';
 
 import { BarState } from './state';
 

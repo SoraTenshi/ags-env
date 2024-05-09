@@ -1,6 +1,6 @@
 import { Icon } from 'widgets/icons';
 import { MaterialIcon } from 'widgets/icons';
-import { BarState } from 'state';
+import { BarState } from '../state';
 
 import { Fzf } from 'node_modules/fzf/dist/fzf.es.js';
 import { KEY_Down, KEY_Tab, KEY_Up } from 'types/@girs/gdk-3.0/gdk-3.0.cjs';

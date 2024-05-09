@@ -1,7 +1,7 @@
 import { Icon } from 'widgets/icons';
 import { MaterialIcon } from 'widgets/icons';
 
-import { BarState } from 'state';
+import { BarState } from '../state';
 
 const EXECUTOR = 'executor';
 
