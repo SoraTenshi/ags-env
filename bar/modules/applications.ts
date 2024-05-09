@@ -9,7 +9,7 @@ const applications = await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
 const SELECTION = Variable<number>(0);
-const FOUND_ITEMS = Variable<Widget.Box[]>([]);
+const FOUND_ITEMS = Variable<AppItem[]>([]);
 
 class AppItem {
   box: Widget.Box;
@@ -52,7 +52,7 @@ export const AppList = () => {
             setup: self => {
               self.hook(FOUND_ITEMS, self => {
                 FOUND_ITEMS.value.length = 14;
-                self.children = FOUND_ITEMS.value;
+                self.children = FOUND_ITEMS.value.map(val => val.box);
               });
             },
           }),
@@ -64,16 +64,16 @@ export const AppList = () => {
 
 const scroll_down = () => {
   if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
-  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
+  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-unfocused';
   SELECTION.value += 1;
-  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
+  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-focused';
 }
 
 const scroll_up = () => {
   if (SELECTION.value === 0) return;
-  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
+  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-unfocused';
   SELECTION.value -= 1;
-  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
+  FOUND_ITEMS.value[SELECTION.value].box.class_name = 'app-focused';
 }
 
 export const AppLauncher = ({ monitor }) => {
@@ -121,12 +121,12 @@ export const AppLauncher = ({ monitor }) => {
               }).join('');
               names[index] = nameMarkup;
             });
-            FOUND_ITEMS.value = fzfResults.map((e: { item: Widget.Box; }, i: number) => {
+            FOUND_ITEMS.value = fzfResults.map((e: { item: AppItem; }, i: number) => {
               const appItem = e.item;
-              appItem.children[0].label = names[i];
+              appItem.box.children[0].label = names[i];
               if (i === 0) {
                 SELECTION.value = 0;
-                appItem.class_name = 'app-focused';
+                appItem.box.class_name = 'app-focused';
               }
               return appItem;
             });

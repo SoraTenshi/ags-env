@@ -34,11 +34,11 @@ const Center = () => Widget.Box({
   ],
 });
 
-const Right = () => Widget.Box({
+const Right = (is_master: boolean) => Widget.Box({
   hpack: 'end',
   children: [
     Connection(),
-    RunCat(),
+    RunCat(is_master),
     Cpu(),
     Memory(),
     Weather(),
@@ -51,6 +51,7 @@ const Right = () => Widget.Box({
 
 type BarStateType = 'bar' | 'app-launcher' | 'executor' | 'shutdown';
 export const Bar = ({ monitor } = { monitor: 1 }) => {
+  const is_master = monitor == 0;
   const barStates = {
     'bar': 'bar',
     'app-launcher': 'app-items',
@@ -73,7 +74,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
               App.closeWindow(name);
             }
           }
-        } catch(err) {
+        } catch (err) {
           print(err);
         };
         BarState.value = `bar ${monitor}`;
@@ -91,7 +92,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
         'bar': Widget.CenterBox({
           start_widget: Left(),
           center_widget: Center(),
-          end_widget: Right(),
+          end_widget: Right(is_master),
         }),
         'app-launcher': AppLauncher({ monitor }),
         'executor': Executor({ monitor }),
