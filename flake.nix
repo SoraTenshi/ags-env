@@ -19,27 +19,29 @@
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            pkg-config
-            meson
-            ninja
-            typescript
-            python3
-            wrapGAppsHook
-            gobject-introspection
+            ags
+            bun
             gjs
-            gtk3
-            libpulseaudio
-            upower
-            gnome.gnome-bluetooth
-            libsoup_3
-            gtk-layer-shell
             glib-networking
-            networkmanager
-            libdbusmenu-gtk3
+            glibc
+            gnome.gnome-bluetooth
+            gobject-introspection
+            gtk-layer-shell
+            gtk3
             gvfs
+            libdbusmenu-gtk3
+            libpulseaudio
+            libsoup_3
+            meson
+            networkmanager
+            ninja
             node2nix
             nodejs
-            glibc
+            pkg-config
+            python3
+            typescript
+            upower
+            wrapGAppsHook
           ];
         };
       });

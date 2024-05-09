@@ -1,24 +1,16 @@
-// @ts-nocheck
-import { Icon } from '../../widgets/icons.js';
-
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
-import App from 'resource:///com/github/Aylur/ags/app.js';
-import Variable from 'resource:///com/github/Aylur/ags/variable.js';
-
+import { Icon } from 'widgets/icons';
 import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
-import { MaterialIcon } from '../../widgets/icons.js';
+import { MaterialIcon } from 'widgets/icons';
 
-import Gdk from 'gi://Gdk';
+import { BarState } from '../state';
 
-import '../state.js';
-import '../bar.js';
+const applications =  await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
-const SELECTION = Variable(0);
-const FOUND_ITEMS = Variable([]);
+const SELECTION = Variable<any>(0);
+const FOUND_ITEMS = Variable<any>([]);
 
-const AppItem = app => Widget.Box({
+const AppItem = (app: any) => Widget.Box({
   setup: self => self['app'] = app,
   class_name: 'app-unfocused',
   vertical: true,
@@ -86,7 +78,7 @@ export const AppLauncher = ({ monitor }) => {
       on_accept: _ => {
         // @ts-ignore
         const text = FOUND_ITEMS.value[SELECTION.value].app.name;
-        const list = Applications.query(text ?? '');
+        const list = applications.query(text ?? '');
         if (list.length > 0) {
           list[0].launch();
           SELECTION.value = 0;
@@ -104,17 +96,17 @@ export const AppLauncher = ({ monitor }) => {
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
           .on('notify::text', entry => {
-            const fzf = new Fzf(Applications.list.map(AppItem), {
-              selector: item => item.app.name,
-              tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
+            const fzf = new Fzf(applications.list.map(AppItem), {
+              selector: (item: any) => item.app.name,
+              tieBreaker: [(a: any, b: any,) => b.item.app._frequency - a.item.app._frequency]
             });
             const text = entry.text;
             // clear the list..
-            const names = [];
+            const names: string[] = [];
             const fzfResults = fzf.find(text);
-            fzfResults.forEach((entry, index) => {
+            fzfResults.forEach((entry: any, index: number) => {
               const nameChars = entry.item.app.name.normalize().split('');
-              const nameMarkup = nameChars.map((char, i) => {
+              const nameMarkup = nameChars.map((char: string, i: number) => {
                 if (entry.positions.has(i))
                   return `<span foreground="#e0af68">${char}</span>`;
                 else
@@ -123,7 +115,7 @@ export const AppLauncher = ({ monitor }) => {
               names[index] = nameMarkup;
             });
             // @ts-ignore
-            FOUND_ITEMS.value = fzfResults.map((e, i) => {
+            FOUND_ITEMS.value = fzfResults.map((e: any, i: number) => {
               const appItem = e.item;
               // @ts-ignore
               appItem.children[0].label = names[i];

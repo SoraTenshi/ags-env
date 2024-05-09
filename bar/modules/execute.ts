@@ -1,12 +1,7 @@
-import { Icon } from '../../widgets/icons.js';
+import { Icon } from 'widgets/icons';
+import { MaterialIcon } from 'widgets/icons';
 
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import App from 'resource:///com/github/Aylur/ags/app.js';
-import { MaterialIcon } from '../../widgets/icons.js';
-
-import '../state.js';
-import '../bar.js';
-import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
+import { BarState } from '../state';
 
 const EXECUTOR = 'executor';
 
@@ -19,7 +14,7 @@ export const Executor = ({ monitor }) => {
     center_widget: Widget.Entry({
       class_name: 'search',
       on_accept: (self) => {
-        execAsync(self.text || '');
+        Utils.execAsync(self.text || '');
         self.text = '';
         BarState.value = `bar ${monitor}`;
       },

@@ -1,6 +1,3 @@
-import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-
 const Conversion = {
   Ampm: {
     "PM": "午後",
@@ -23,18 +20,18 @@ export const Clock = () => Widget.Button({
     children: [
       Widget.Label({
         class_name: 'ampm',
-        setup: self => self.poll(1000, self => execAsync(['date', '+%p'])
+        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%p'])
           .then(ampm => self.label = Conversion.Ampm[ampm]).catch(console.error)),
       }),
       Widget.Label({
         class_name: 'clock',
         xpad: 10,
-        setup: self => self.poll(1000, self => execAsync(['date', '+%I:%M:%S\n%y-%m-%d'])
+        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%I:%M:%S\n%y-%m-%d'])
           .then(date => self.label = date).catch(console.error)),
       }),
       Widget.Label({
         class_name: 'day',
-        setup: self => self.poll(1000, self => execAsync(['date', '+%a'])
+        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%a'])
           .then(day => self.label = Conversion.Day[day]).catch(console.error)),
       }),
     ],

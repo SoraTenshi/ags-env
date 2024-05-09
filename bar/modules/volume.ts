@@ -1,22 +1,21 @@
-import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import { MaterialIcon, Icon } from '../../widgets/icons.js';
+import { MaterialIcon, Icon } from 'widgets/icons';
 
-export const Volume = ( /** @type {string} */ type) => {
+const audio = await Service.import('audio');
+
+type AudioThreshhold = '101' | '67' | '34' | '1' | '0';
+export const Volume = (type: number) => {
   return Widget.EventBox({
     on_hover: self => {
-      let child = self.child["children"][0];
-      // @ts-ignore
-      child.reveal_child = true;
+      const child = self.child.children[0];
+      child['reveal_child'] = true;
     },
     on_hover_lost: self => {
-      let child = self.child["children"][0];
-      // @ts-ignore
-      child.reveal_child = false;
+      const child = self.child.children[0];
+      child['reveal_child'] = false;
     },
     on_primary_click: () => {
-      if (!Audio[type]) return;
-      Audio[type].is_muted = !Audio[type].is_muted;
+      if (!audio[type]) return;
+      audio[type].is_muted = !audio[type].is_muted;
     },
     child: Widget.Box({
       hexpand: true,
@@ -31,10 +30,10 @@ export const Volume = ( /** @type {string} */ type) => {
             child: Widget.Slider({
               hexpand: true,
               draw_value: false,
-              on_change: ({ value }) => Audio[type].volume = value,
+              on_change: ({ value }) => audio[type].volume = value,
               setup: self => {
-                self.hook(Audio, self => {
-                  self.value = Audio[type].volume || 0;
+                self.hook(audio, self => {
+                  self.value = audio[type].volume || 0;
                 }, `${type}-changed`);
               },
             }),
@@ -50,20 +49,19 @@ export const Volume = ( /** @type {string} */ type) => {
             '0': MaterialIcon({ icon: Icon[type].muted, size: '1.2rem' }),
           },
           setup: self => {
-            self.hook(Audio, self => {
-              if (!Audio[type])
+            self.hook(audio, self => {
+              if (!audio[type])
                 return;
 
-              if (Audio[type].is_muted) {
+              if (audio[type].is_muted) {
                 self.shown = '0';
                 return;
               }
 
-              const show = [101, 67, 34, 1, 0].find(
-                threshold => threshold <= Audio[type].volume * 100);
+              const show = ([101, 67, 34, 1, 0].find(
+                threshold => threshold <= audio[type].volume * 100) || 0).toString();
 
-              // @ts-ignore
-              self.shown = `${show}`;
+              self.shown = `${show}` as AudioThreshhold;
             }, `${type}-changed`);
           },
         }),
@@ -71,3 +69,4 @@ export const Volume = ( /** @type {string} */ type) => {
     }),
   });
 };
+
