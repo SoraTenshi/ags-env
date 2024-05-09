@@ -1,35 +1,36 @@
-// @ts-nocheck
-import { Icon } from '../../widgets/icons.js';
-
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
-import App from 'resource:///com/github/Aylur/ags/app.js';
-import Variable from 'resource:///com/github/Aylur/ags/variable.js';
+import { Icon } from 'widgets/icons';
+import { MaterialIcon } from 'widgets/icons';
+import { BarState } from 'state';
 
 import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
-import { MaterialIcon } from '../../widgets/icons.js';
+import { Application } from 'types/service/applications';
 
-import Gdk from 'gi://Gdk';
-
-import '../state.js';
-import '../bar.js';
+const applications = await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
-const SELECTION = Variable(0);
-const FOUND_ITEMS = Variable([]);
+const SELECTION = Variable<number>(0);
+const FOUND_ITEMS = Variable<Widget.Box[]>([]);
 
-const AppItem = app => Widget.Box({
-  setup: self => self['app'] = app,
-  class_name: 'app-unfocused',
-  vertical: true,
-  vexpand: true,
-  children: [Widget.Label({
-    use_markup: true,
-    class_name: 'app-title',
-    xalign: 0,
-    vpack: 'center',
-  })],
-});
+class AppItem {
+  box: Widget.Box;
+  app: Application;
+
+  constructor(app: Application) {
+    this.app = app;
+    this.box = Widget.Box({
+      setup: self => self['app'] = app,
+      class_name: 'app-unfocused',
+      vertical: true,
+      vexpand: true,
+      children: [Widget.Label({
+        use_markup: true,
+        class_name: 'app-title',
+        xalign: 0,
+        vpack: 'center',
+      })],
+    })
+  }
+}
 
 export const AppList = () => {
   return Widget.Window({
@@ -83,10 +84,9 @@ export const AppLauncher = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      on_accept: _ => {
-        // @ts-ignore
+      on_accept: () => {
         const text = FOUND_ITEMS.value[SELECTION.value].app.name;
-        const list = Applications.query(text ?? '');
+        const list = applications.query(text ?? '');
         if (list.length > 0) {
           list[0].launch();
           SELECTION.value = 0;
@@ -97,24 +97,23 @@ export const AppLauncher = ({ monitor }) => {
       },
 
       setup: self => {
-        // @ts-ignore
         self
           .keybind("Tab", scroll_down)
           .keybind("Down", scroll_down)
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
           .on('notify::text', entry => {
-            const fzf = new Fzf(Applications.list.map(AppItem), {
-              selector: item => item.app.name,
-              tieBreaker: [(a, b, sel) => b.item.app._frequency - a.item.app._frequency]
-            });
+            const fzf = new Fzf(applications.list.map((value: Application,) => new AppItem(value), {
+              selector: (item: AppItem) => item.app.name,
+              tieBreaker: [(a: AppItem, b: AppItem,) => b.app['_frequency'] - a.app['_frequency']]
+            }));
             const text = entry.text;
             // clear the list..
-            const names = [];
+            const names: string[] = [];
             const fzfResults = fzf.find(text);
-            fzfResults.forEach((entry, index) => {
+            fzfResults.forEach((entry: { item: { app: { name: string; }; }; positions: { has: (arg0: number) => boolean; }; }, index: number) => {
               const nameChars = entry.item.app.name.normalize().split('');
-              const nameMarkup = nameChars.map((char, i) => {
+              const nameMarkup = nameChars.map((char: string, i: number) => {
                 if (entry.positions.has(i))
                   return `<span foreground="#e0af68">${char}</span>`;
                 else
@@ -122,10 +121,8 @@ export const AppLauncher = ({ monitor }) => {
               }).join('');
               names[index] = nameMarkup;
             });
-            // @ts-ignore
-            FOUND_ITEMS.value = fzfResults.map((e, i) => {
+            FOUND_ITEMS.value = fzfResults.map((e: { item: Widget.Box; }, i: number) => {
               const appItem = e.item;
-              // @ts-ignore
               appItem.children[0].label = names[i];
               if (i === 0) {
                 SELECTION.value = 0;
@@ -140,7 +137,7 @@ export const AppLauncher = ({ monitor }) => {
             self.text = '';
             self.grab_focus();
           })
-          .hook(BarState, _ => {
+          .hook(BarState, () => {
             if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
           });
       }

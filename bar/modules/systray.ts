@@ -1,7 +1,6 @@
-import { Icon } from '../../widgets/icons.js';
+import { Icon } from 'widgets/icons';
 
-import SystemTray from 'resource:///com/github/Aylur/ags/service/systemtray.js';
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+const system_tray = await Service.import('systemtray');
 
 export const SysTray = () => {
   const trayIcon = Widget.Label({
@@ -12,8 +11,8 @@ export const SysTray = () => {
   const TrayItems = () => Widget.Box({
     class_name: 'systray',
     setup: self => {
-      self.hook(SystemTray, self => {
-      self.children = SystemTray.items.map(item => Widget.Button({
+      self.hook(system_tray, self => {
+      self.children = system_tray.items.map(item => Widget.Button({
         child: Widget.Icon({ 
           setup: s => s.bind('icon', item, 'icon'),
         }),
@@ -37,7 +36,7 @@ export const SysTray = () => {
       children: [
         Widget.Button({
           child: trayIcon,
-          on_primary_click: _ => {
+          on_primary_click: () => {
             trayRevealer.reveal_child = !trayRevealer.reveal_child;
             trayRevealer.transition = trayRevealer.reveal_child ? 'slide_left' : 'slide_right';
             trayIcon.label = trayRevealer.reveal_child ? Icon.systray.hide : Icon.systray.unhide;

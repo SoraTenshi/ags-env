@@ -1,22 +1,13 @@
-import { Icon } from '../../widgets/icons.js';
+import { Icon } from 'widgets/icons';
+import { MaterialIcon } from 'widgets/icons';
+import { BarState } from 'state';
 
-import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import App from 'resource:///com/github/Aylur/ags/app.js';
-import Variable from 'resource:///com/github/Aylur/ags/variable.js';
-
-import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
-import { MaterialIcon } from '../../widgets/icons.js';
-
-import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-
-import Gdk from 'gi://Gdk';
-
-import '../state.js';
-import '../bar.js';
+import { Fzf } from 'node_modules/fzf/dist/fzf.es.js';
+import { KEY_Down, KEY_Tab, KEY_Up } from 'types/@girs/gdk-3.0/gdk-3.0.cjs';
 
 const SHUTDOWN = 'shutdown';
-const SELECTION = Variable(0);
-const FOUND_ITEMS = Variable([]);
+const SELECTION = Variable<number>(0);
+const FOUND_ITEMS = Variable<Widget.Box[]>([]);
 
 const labels = [
   "Shutdown",
@@ -34,7 +25,7 @@ const commands = {
   hibernate: 'systemctl hibernate',
 };
 
-const ShutdownItem = (/** @type {any} */ elem) => Widget.Box({
+const ShutdownItem = (elem: string) => Widget.Box({
   class_name: 'app-unfocused',
   vertical: true,
   vexpand: true,
@@ -85,9 +76,8 @@ export const Shutdown = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      on_accept: _ => {
-        // @ts-ignore
-        const text = FOUND_ITEMS.value[SELECTION.value]['children'][0]['label'].replaceAll(' ', '').toLowerCase();
+      on_accept: () => {
+        const text = FOUND_ITEMS.value[SELECTION.value].children[0].label.replaceAll(' ', '').toLowerCase();
         if (text.length > 0) {
           Utils.execAsync(commands[text]).finally(() => {
             SELECTION.value = 0;
@@ -100,35 +90,28 @@ export const Shutdown = ({ monitor }) => {
 
       setup: self => {
         self.on('key-press-event', (_, event) => {
-          // @ts-ignore
           const first = event.get_keyval()[1];
-          // @ts-ignore
-          if (first === Gdk.KEY_Tab || first == Gdk.KEY_Down) {
+          if (first === KEY_Tab || first == KEY_Down) {
             if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
-            // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value += 1;
-            // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
-            // @ts-ignore
           }
-          if (first === 65056 || first === Gdk.KEY_Up) { // Shift + Tab
+          if (first === 65056 || first === KEY_Up) { // Shift + Tab
             if (SELECTION.value === 0) return;
-            // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
             SELECTION.value -= 1;
-            // @ts-ignore
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
           }
         }).on('notify::text', entry => {
           const fzf = new Fzf(labels);
           const text = entry.text;
           // clear the list..
-          const names = [];
+          const names: string[] = [];
           const fzfResults = fzf.find(text);
-          fzfResults.forEach((/** @type {{ item: string; positions: { has: (arg0: any) => any; }; }} */ entry, /** @type {string | number} */ index) => {
+          fzfResults.forEach((entry: { item: string; positions: { has: (a: number) => boolean; }; }, index: number) => {
             const nameChars = entry.item.split('');
-            const nameMarkup = nameChars.map((char, i) => {
+            const nameMarkup = nameChars.map((char: string, i: number) => {
               if (entry.positions.has(i))
                 return `<span foreground="#e0af68">${char}</span>`;
               else
@@ -136,8 +119,7 @@ export const Shutdown = ({ monitor }) => {
             }).join('');
             names[index] = nameMarkup;
           });
-          // @ts-ignore
-          FOUND_ITEMS.value = fzfResults.map((/** @type {any} */ _e, /** @type {number} */ i) => {
+          FOUND_ITEMS.value = fzfResults.map((_e: unknown, i: number) => {
             const appItem = ShutdownItem(names[i]);
             if (i === 0) {
               SELECTION.value = 0;
@@ -150,7 +132,7 @@ export const Shutdown = ({ monitor }) => {
 
           self.text = '';
           self.grab_focus();
-        }).hook(BarState, _ => {
+        }).hook(BarState, () => {
           if (BarState.value === `shutdown ${monitor}`) {
             App.openWindow(SHUTDOWN);
           }
