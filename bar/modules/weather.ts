@@ -1,6 +1,9 @@
+import { uri_build } from 'types/@girs/glib-2.0/glib-2.0.cjs';
 import { Icon } from 'widgets/icons';
 
-const thirtyMinutes: number = 1000 * 60 * 30;
+const tenMinutes: number = 1000 * 60 * 10;
+
+const location = Variable<string>("");
 
 const twelveToTwentyFour = (s: string) => {
   const time = s.split(' ');
@@ -37,8 +40,17 @@ export const Weather = () => Widget.Box({
   ],
 
   setup: self => {
-    self.poll(thirtyMinutes, self => {
-      Utils.fetch('http://wttr.in/?format=j1')
+    self.poll(tenMinutes, () => {
+      Utils.fetch('http://ipinfo.io/city')
+        .then(response => response.text().then(res => {
+          location.value = res.trim();
+        }));
+
+    });
+
+    self.hook(location, self => {
+      const url = `http://wttr.in/${location.value}?format=j1`;
+      Utils.fetch(url)
         .then(result => result.json().then(res => {
           const weather = res;
           const weatherCondition = weather.current_condition[0];
