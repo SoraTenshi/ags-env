@@ -6,8 +6,6 @@ globalThis.BarState = BarState;
 
 // -------------- Cat State :3 -------------- \\
 
-export type CatType = "0" | "1" | "2" | "3" | "4";
-export const CAT_CYCLE: CatType[] = ["0", "1", "2", "3", "4"];
-
-export const CatState = Variable<CatType>("0");
-globalThis.RunCatState = CatState;
+export type CatType = "cat_0-symbolic" | "cat_1-symbolic" | "cat_2-symbolic" | "cat_3-symbolic" | "cat_4-symbolic";
+export const CAT_CYCLE: CatType[] = ["cat_0-symbolic", "cat_1-symbolic", "cat_2-symbolic", "cat_3-symbolic", "cat_4-symbolic"];
+export const CatState = Variable<CatType>(CAT_CYCLE[0] as CatType);
