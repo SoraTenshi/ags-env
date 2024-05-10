@@ -23,6 +23,8 @@
 }
 
 .music {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   margin-bottom: 5px;
   min-width: 300px;
 }
