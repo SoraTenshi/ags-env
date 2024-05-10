@@ -3,9 +3,9 @@ import { CAT_CYCLE, CatState } from '../state';
 const MIN_CYCLES = 1000;
 
 let current_cycle = 0;
-let load = Variable<number>(0);
 let frames = MIN_CYCLES;
 
+const load = Variable<number>(0);
 
 const schedule_for_framechange = (is_master: boolean) => {
   Utils.timeout(frames, () => {

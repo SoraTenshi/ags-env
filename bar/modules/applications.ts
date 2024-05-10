@@ -10,7 +10,7 @@ const APP_LAUNCHER = 'app-items';
 const SELECTION = Variable<any>(0);
 const FOUND_ITEMS = Variable<any>([]);
 
-const AppItem = (app: any) => Widget.Box({
+const AppItem = (app: unknown) => Widget.Box({
   setup: self => self['app'] = app,
   class_name: 'app-unfocused',
   vertical: true,
@@ -75,8 +75,7 @@ export const AppLauncher = ({ monitor }) => {
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      on_accept: _ => {
-        // @ts-ignore
+      on_accept: () => {
         const text = FOUND_ITEMS.value[SELECTION.value].app.name;
         const list = applications.query(text ?? '');
         if (list.length > 0) {
@@ -89,7 +88,6 @@ export const AppLauncher = ({ monitor }) => {
       },
 
       setup: self => {
-        // @ts-ignore
         self
           .keybind("Tab", scroll_down)
           .keybind("Down", scroll_down)
@@ -114,10 +112,8 @@ export const AppLauncher = ({ monitor }) => {
               }).join('');
               names[index] = nameMarkup;
             });
-            // @ts-ignore
             FOUND_ITEMS.value = fzfResults.map((e: any, i: number) => {
               const appItem = e.item;
-              // @ts-ignore
               appItem.children[0].label = names[i];
               if (i === 0) {
                 SELECTION.value = 0;
@@ -132,7 +128,7 @@ export const AppLauncher = ({ monitor }) => {
             self.text = '';
             self.grab_focus();
           })
-          .hook(BarState, _ => {
+          .hook(BarState, () => {
             if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
           });
       }

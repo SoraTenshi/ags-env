@@ -1,4 +1,3 @@
-import { uri_build } from 'types/@girs/glib-2.0/glib-2.0.cjs';
 import { Icon } from 'widgets/icons';
 
 const tenMinutes: number = 1000 * 60 * 10;
