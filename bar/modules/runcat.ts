@@ -21,7 +21,7 @@ export const RunCat = (is_master: boolean) => Widget.Box({
   tooltip_markup: load.bind().as(r => `CPU: ${r}%`),
   setup: () => {
     if (is_master) {
-      Utils.interval(1000, () => {
+      Utils.interval(2000, () => {
         Utils.execAsync(["sh", "-c", `top -bn1 | grep '%Cpu' | tail -1 | awk '{print 100-$8}'`])
           .then((r) => {
             load.value = Math.round(Number(r));
