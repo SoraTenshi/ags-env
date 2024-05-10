@@ -1,8 +1,8 @@
 .bar {
   background-color: rgba(36, 40, 50, 0.7);
   color: #c0caf5;
-  font-family: "Lilex Nerd Font Regular";
-  font-feature-settings: "zero";
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
 }
 
 .icon-material {
@@ -28,17 +28,23 @@
 }
 
 .artist {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 0.7rem;
   font-style: italic;
   min-width: 300px;
 }
 
 .song {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 0.9rem;
   min-width: 300px;
 }
 
 .item-box {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 1.4rem;
   color: #c0caf5;
   min-width: 1920px;
@@ -65,6 +71,8 @@
 }
 
 .weather-temp {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   padding: 5px;
   margin-top: 1px;
   font-size: 0.9rem;
@@ -102,23 +110,26 @@
 }
 
 .clock {
-  font-family: "RictyDiminished with Fira Code Regular";
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 0.8rem;
 }
 
 .ampm {
-  font-family: "RictyDiminished with Fira Code Regular";
-  font-size: 1.2rem;
+  font-family: "RictyDiminished with Fira Code";
+  font-size: 1.5rem;
   color: #7aa2f7;
 }
 
 .day {
-  font-family: "RictyDiminished with Fira Code Regular";
-  font-size: 1.2rem;
+  font-family: "RictyDiminished with Fira Code";
+  font-size: 1.5rem;
   color: #7aa2f7;
 }
 
 .pre-search {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   background-color: #7aa2f7;
   color: #24283b;
   font-size: 1.4rem;
@@ -128,6 +139,8 @@
 }
 
 .search {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   min-width: 1860px;
   background-color: #24283b;
   font-size: 1.3rem;
@@ -138,29 +151,41 @@
 }
 
 .app-title {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 1.3rem;
 }
 
 .app-list {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   background-color: #24283b;
 }
 
 .cpu-name {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   margin-top: 10px;
   font-size: 0.6rem;
 }
 
 .cpu-val {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 0.8rem;
   margin-right: 5px;
 }
 
 .mem-name {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   margin-top: 10px;
   font-size: 0.6rem;
 }
 
 .mem-val {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
   font-size: 0.8rem;
 }
 

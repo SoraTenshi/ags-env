@@ -11,4 +11,11 @@ App.config({
     ShutdownList(),
   ],
 });
+Utils.monitorFile(
+  `${App.configDir}/bar/style.css`,
+  function() {
+    App.resetCss();
+    App.applyCss(`${App.configDir}/bar/style.css`);
+  }
+)
 
