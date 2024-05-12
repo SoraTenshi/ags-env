@@ -191,6 +191,14 @@
   font-size: 0.8rem;
 }
 
+.todo {
+  font-family: "Lilex Nerd Font";
+  font-feature-settings: "cv08,zero,cv09,cv10";
+  font-size: 1.2rem;
+  margin-left: 0.6em;
+  min-width: 28em;
+}
+
 tooltip {
   background-color: #24283b;
   color: #c0caf5;

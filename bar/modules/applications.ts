@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any  */
+// Unfortunately, Fzf is a Javascript library and i am not sure
+// how i can make the types be correct.
 import { Icon } from 'widgets/icons';
 import { Fzf } from '../../node_modules/fzf/dist/fzf.es.js';
 import { MaterialIcon } from 'widgets/icons';

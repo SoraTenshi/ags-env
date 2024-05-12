@@ -11,6 +11,7 @@ import { SysTray } from './modules/systray';
 import { Volume } from './modules/volume';
 import { Weather } from './modules/weather';
 import { Workspaces } from './modules/workspaces';
+import { Todo } from './modules/todo';
 
 import { BarState } from './state';
 
@@ -25,6 +26,7 @@ const Sound = () => Widget.Box({
 const Left = () => Widget.Box({
   children: [
     Workspaces(),
+    Todo(),
   ],
 });
 
