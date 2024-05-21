@@ -1,4 +1,3 @@
-
 // -------------- Top Bar State -------------- \\
 
 export const BarState = Variable<string>('bar');

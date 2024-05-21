@@ -1,4 +1,4 @@
-import { CAT_CYCLE, CatState } from '../state';
+import { CAT_CYCLE, CatState } from '../state.js';
 
 const MIN_CYCLES = 1000;
 

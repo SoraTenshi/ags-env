@@ -1,4 +1,4 @@
-import { Icon } from 'widgets/icons';
+import { Icon } from 'widgets/icons.js';
 
 const battery = await Service.import('battery');
 

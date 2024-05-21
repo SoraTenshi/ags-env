@@ -1,4 +1,4 @@
-import { Icon, MaterialIcon } from 'widgets/icons';
+import { Icon, MaterialIcon } from 'widgets/icons.js';
 
 const hyprland = await Service.import('hyprland');
 

@@ -1,4 +1,4 @@
-import { Icon } from 'widgets/icons';
+import { Icon } from 'widgets/icons.js';
 
 const tenMinutes: number = 1000 * 60 * 10;
 

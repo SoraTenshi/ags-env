@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AGS configuration",
   "author": "SoraTenshi",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SoraTenshi/ags-env.git"

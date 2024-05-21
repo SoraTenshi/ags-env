@@ -1,9 +1,10 @@
-import { Icon } from 'widgets/icons';
-import { MaterialIcon } from 'widgets/icons';
-import { BarState } from '../state';
+import { Fzf } from 'fzf';
 
-import { Fzf } from 'node_modules/fzf/dist/fzf.es.js';
 import { KEY_Down, KEY_Tab, KEY_Up } from 'types/@girs/gdk-3.0/gdk-3.0.cjs';
+
+import { Icon } from 'widgets/icons.js';
+import { MaterialIcon } from 'widgets/icons.js';
+import { BarState } from '../state.js';
 
 const SHUTDOWN = 'shutdown';
 const SELECTION = Variable<number>(0);

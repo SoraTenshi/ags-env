@@ -1,4 +1,4 @@
-import { MaterialIcon, Icon } from 'widgets/icons';
+import { MaterialIcon, Icon } from 'widgets/icons.js';
 
 const audio = await Service.import('audio');
 

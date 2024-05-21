@@ -1,19 +1,19 @@
-import { AppLauncher } from './modules/applications';
-import { Battery } from './modules/battery';
-import { Clock } from './modules/clock';
-import { Connection } from './modules/network';
-import { Cpu, Memory } from './modules/system';
-import { Executor } from './modules/execute';
-import { Media } from './modules/media';
-import { RunCat } from './modules/runcat';
-import { Shutdown } from './modules/shutdown';
-import { SysTray } from './modules/systray';
-import { Volume } from './modules/volume';
-import { Weather } from './modules/weather';
-import { Workspaces } from './modules/workspaces';
-import { Todo } from './modules/todo';
+import { AppLauncher } from './modules/applications.js';
+import { Battery } from './modules/battery.js';
+import { Clock } from './modules/clock.js';
+import { Connection } from './modules/network.js';
+import { Cpu, Memory } from './modules/system.js';
+import { Executor } from './modules/execute.js';
+import { Media } from './modules/media.js';
+import { RunCat } from './modules/runcat.js';
+import { Shutdown } from './modules/shutdown.js';
+import { SysTray } from './modules/systray.js';
+import { Volume } from './modules/volume.js';
+import { Weather } from './modules/weather.js';
+import { Workspaces } from './modules/workspaces.js';
+import { Todo } from './modules/todo.js';
 
-import { BarState } from './state';
+import { BarState } from './state.js';
 
 const Sound = () => Widget.Box({
   class_name: 'sound',

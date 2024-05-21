@@ -1,7 +1,6 @@
-import { Icon } from 'widgets/icons';
-import { MaterialIcon } from 'widgets/icons';
-
-import { BarState } from '../state';
+import { Icon } from 'widgets/icons.js';
+import { MaterialIcon } from 'widgets/icons.js';
+import { BarState } from '../state.js';
 
 const EXECUTOR = 'executor';
 
