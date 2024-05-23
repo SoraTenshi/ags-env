@@ -24,8 +24,8 @@ export const Media = () => {
             class_name: 'artist',
           })
         }),
-        setup: self => {
-          self.hook(mpris, self => {
+        setup: (self: ReturnType<typeof Widget.Button>) => {
+          self.hook(mpris, (self: ReturnType<typeof Widget.Button>) => {
             if(self.child.center_widget === null || self.child.start_widget === null) {
               return;
             }
@@ -46,11 +46,11 @@ export const Media = () => {
       overlays: [Widget.ProgressBar({
         class_name: 'trackbar',
         visible: false,
-        setup: self => {
-          self.hook(mpris, self => {
+        setup: (self: ReturnType<typeof Widget.ProgressBar>) => {
+          self.hook(mpris, (self: ReturnType<typeof Widget.ProgressBar>) => {
             player = mpris.getPlayer("spotify") || mpris.players[0];
             self.visible = !!player;
-          }).poll(1000, self => {
+          }).poll(1000, (self: ReturnType<typeof Widget.ProgressBar>) => {
               if (!player) return;
               self.visible = !!player;
               self.value = player.position / player.length;

@@ -126,7 +126,7 @@ export const Icon = {
   }
 }
 
-export const MaterialIcon = ({ /** @type {string} */ icon, size = '1.0rem', class_name = 'icon-material' }) => Widget.Label({
+export const MaterialIcon = (icon: string, size = '1.0rem', class_name = 'icon-material') => Widget.Label({
   class_name,
   css: `font-family: 'Material Symbols Sharp'; font-size: ${size}`,
   label: icon,

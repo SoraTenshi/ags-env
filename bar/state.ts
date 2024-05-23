@@ -1,6 +1,8 @@
 // -------------- Top Bar State -------------- \\
 
 export const BarState = Variable<string>('bar');
+
+declare global { var BarState: ReturnType<typeof Variable<string>> };
 globalThis.BarState = BarState;
 
 // -------------- Cat State :3 -------------- \\

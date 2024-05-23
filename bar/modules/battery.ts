@@ -16,6 +16,7 @@ const format_seconds = (seconds: number): string => {
   return `${fmt_hrs}h:${fmt_mins}m:${fmt_secs}s`;
 }
 
+type BatteryType = (keyof typeof Icon.battery) & (keyof typeof Icon.battery.charging);
 export const Battery = () => Widget.Box({
   setup: () => {
     Utils.interval(5000, () => {
@@ -31,9 +32,9 @@ export const Battery = () => Widget.Box({
   children: [
     Widget.Label({
       class_name: 'battery-icon',
-      label: Utils.merge([battery.bind('percent'), battery.bind('charging')], (percent, charging) => {
-        const percentile = percent - (percent % 10);
-        return charging ? Icon.battery.charging[`${percentile}`] : Icon.battery[`${percentile}`];
+      label: Utils.merge([battery.bind('percent'), battery.bind('charging')], (percent: number, charging: boolean) => {
+        const percentile = `${percent - (percent % 10)}` as BatteryType;
+        return charging ? Icon.battery.charging[percentile] : Icon.battery[percentile];
       }),
     }),
     Widget.Label({

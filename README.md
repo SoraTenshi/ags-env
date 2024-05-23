@@ -1,6 +1,15 @@
-# ags-env
-An attempt to get ags in as a drop-in replacement for several apps
 
-## Special thanks to:
-- [kotontrion](https://github.com/kotontrion), helping me with a few issues i had + their fuzzy finder logic
-- [Kyome22](https://github.com/Kyome22/menubar_runcat) for their runcat SVGs.
+# Starter Config
+
+if suggestions don't work, first make sure
+you have TypeScript LSP working in your editor
+
+if you do not want typechecking only suggestions
+
+```json
+// tsconfig.json
+"checkJs": false
+```
+
+types are symlinked to:
+/nix/store/y0gz20pykvba06y1yrzhc7b9wisprlv1-ags-1.8.0/share/com.github.Aylur.ags/types

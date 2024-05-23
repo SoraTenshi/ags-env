@@ -4,22 +4,22 @@ import { BarState } from '../state.js';
 
 const EXECUTOR = 'executor';
 
-export const Executor = ({ monitor }) => {
+export const Executor = ({ monitor }: { monitor: number; }) => {
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
-      child: MaterialIcon({ icon: Icon.modes.execute, size: '1.8rem' })
+      child: MaterialIcon(Icon.modes.execute, '1.8rem' )
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
-      on_accept: (self) => {
+      on_accept: (self: ReturnType<typeof Widget.Entry>) => {
         Utils.execAsync(self.text || '');
         self.text = '';
         BarState.value = `bar ${monitor}`;
       },
 
-      setup: self => {
-        self.hook(App, (self, name, visible) => {
+      setup: (self: ReturnType<typeof Widget.Entry>) => {
+        self.hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
           if (name !== EXECUTOR || !visible) return;
 
           self.text = '';

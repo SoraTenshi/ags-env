@@ -18,16 +18,16 @@ const schedule_for_framechange = (is_master: boolean) => {
 }
 
 export const RunCat = (is_master: boolean) => Widget.Box({
-  tooltip_markup: load.bind().as(r => `CPU: ${r}%`),
+  tooltip_markup: load.bind().as((r: string) => `CPU: ${r}%`),
   setup: () => {
     if (is_master) {
       Utils.interval(2000, () => {
         Utils.execAsync(["sh", "-c", `top -bn1 | grep '%Cpu' | tail -1 | awk '{print 100-$8}'`])
-          .then((r) => {
+          .then((r: string) => {
             load.value = Math.round(Number(r));
             frames = Math.round(1000 / (load.value / 2));
           })
-          .catch((err) => print(err));
+          .catch((err: Error) => print(err));
       });
     }
   },

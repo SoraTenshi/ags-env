@@ -14,25 +14,28 @@ const Conversion = {
   }
 }
 
+type AmPm = 'AM' | 'PM';
+type Day =  keyof typeof Conversion.Day;
+
 export const Clock = () => Widget.Button({
   class_name: 'clock-bg',
   child: Widget.Box({
     children: [
       Widget.Label({
         class_name: 'ampm',
-        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%p'])
-          .then(ampm => self.label = Conversion.Ampm[ampm]).catch(console.error)),
+        setup: (self: ReturnType<typeof Widget.Label>) => self.poll(1000, (self: ReturnType<typeof Widget.Label>) => Utils.execAsync(['date', '+%p'])
+          .then((ampm: AmPm) => self.label = Conversion.Ampm[ampm]).catch(print)),
       }),
       Widget.Label({
         class_name: 'clock',
         xpad: 10,
-        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%I:%M:%S\n%y-%m-%d'])
-          .then(date => self.label = date).catch(console.error)),
+        setup: (self: ReturnType<typeof Widget.Label>) => self.poll(1000, (self: ReturnType<typeof Widget.Label>) => Utils.execAsync(['date', '+%I:%M:%S\n%y-%m-%d'])
+          .then((date: string )=> self.label = date).catch(print)),
       }),
       Widget.Label({
         class_name: 'day',
-        setup: self => self.poll(1000, self => Utils.execAsync(['date', '+%a'])
-          .then(day => self.label = Conversion.Day[day]).catch(console.error)),
+        setup: (self: ReturnType<typeof Widget.Label>) => self.poll(1000, (self: ReturnType<typeof Widget.Label>) => Utils.execAsync(['date', '+%a'])
+          .then((day: string) => self.label = Conversion.Day[day as Day]).catch(console.error)),
       }),
     ],
   }),

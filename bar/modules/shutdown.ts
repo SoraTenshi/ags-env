@@ -8,7 +8,7 @@ import { BarState } from '../state.js';
 
 const SHUTDOWN = 'shutdown';
 const SELECTION = Variable<number>(0);
-const FOUND_ITEMS = Variable<Widget.Box[]>([]);
+const FOUND_ITEMS = Variable<ReturnType<typeof Widget.Box>[]>([]);
 
 const labels = [
   "Shutdown",
@@ -25,6 +25,7 @@ const commands = {
   sleep: 'sleep',
   hibernate: 'systemctl hibernate',
 };
+type Commands = keyof typeof commands;
 
 const ShutdownItem = (elem: string) => Widget.Box({
   class_name: 'app-unfocused',
@@ -46,7 +47,7 @@ export const ShutdownList = () => {
     exclusivity: 'normal',
     class_name: 'app-list',
     name: SHUTDOWN,
-    setup: self => self.keybind('Escape', () => App.closeWindow(SHUTDOWN)),
+    setup: (self: ReturnType<typeof Widget.Window>) => self.keybind('Escape', () => App.closeWindow(SHUTDOWN)),
     child: Widget.Box({
       css: `min-height: 145px`,
       children: [
@@ -56,8 +57,8 @@ export const ShutdownList = () => {
             vertical: true,
             class_name: 'item-box',
             vpack: 'start',
-            setup: self => {
-              self.hook(FOUND_ITEMS, self => {
+            setup: (self: ReturnType<typeof Widget.Box>) => {
+              self.hook(FOUND_ITEMS, (self: ReturnType<typeof Widget.Box>) => {
                 FOUND_ITEMS.value.length = 5;
                 self.children = FOUND_ITEMS.value;
               });
@@ -69,16 +70,16 @@ export const ShutdownList = () => {
   });
 }
 
-export const Shutdown = ({ monitor }) => {
+export const Shutdown = ({ monitor }: { monitor: number; }) => {
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
-      child: MaterialIcon({ icon: Icon.modes.power, size: '1.8rem' })
+      child: MaterialIcon(Icon.modes.power, '1.8rem'),
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
       on_accept: () => {
-        const text = FOUND_ITEMS.value[SELECTION.value].children[0].label.replaceAll(' ', '').toLowerCase();
+        const text: Commands = FOUND_ITEMS.value[SELECTION.value].children[0].label.replaceAll(' ', '').toLowerCase();
         if (text.length > 0) {
           Utils.execAsync(commands[text]).finally(() => {
             SELECTION.value = 0;
@@ -89,8 +90,8 @@ export const Shutdown = ({ monitor }) => {
         }
       },
 
-      setup: self => {
-        self.on('key-press-event', (_, event) => {
+      setup: (self: ReturnType<typeof Widget.Entry>) => {
+        self.on('key-press-event', (event: Gdk.Event) => {
           const first = event.get_keyval()[1];
           if (first === KEY_Tab || first == KEY_Down) {
             if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
@@ -104,7 +105,7 @@ export const Shutdown = ({ monitor }) => {
             SELECTION.value -= 1;
             FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
           }
-        }).on('notify::text', entry => {
+        }).on('notify::text', (entry: ReturnType<typeof Widget.Entry>) => {
           const fzf = new Fzf(labels);
           const text = entry.text;
           // clear the list..
@@ -128,7 +129,7 @@ export const Shutdown = ({ monitor }) => {
             }
             return appItem;
           });
-        }).hook(App, (self, name, visible) => {
+        }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
           if (name !== SHUTDOWN || !visible) return;
 
           self.text = '';

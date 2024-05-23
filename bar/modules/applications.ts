@@ -1,22 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any  */
-// Unfortunately, Fzf is a Javascript library and i am not sure
-// how i can make the types be correct.
-import { Icon } from 'widgets/icons.js';
-import { MaterialIcon } from 'widgets/icons.js';
+import { Fzf, FzfResultItem } from 'fzf';
 
-import { Fzf } from 'fzf';
-
+import { Icon, MaterialIcon } from 'widgets/icons.js';
 import { BarState } from '../state.js';
 
+import { Application } from 'types/service/applications.js';
 
 const applications =  await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
-const SELECTION = Variable<any>(0);
+const SELECTION = Variable<number>(0);
 const FOUND_ITEMS = Variable<any>([]);
 
-const AppItem = (app: unknown) => Widget.Box({
-  setup: self => self['app'] = app,
+type AppItem = ReturnType<typeof Widget.Box> & { app: Application };
+const create_app_item = (app: Application): AppItem => Widget.Box({
+  setup: (self: ReturnType<typeof Widget.Box>) => (self as AppItem).app = app,
   class_name: 'app-unfocused',
   vertical: true,
   vexpand: true,
@@ -26,7 +23,7 @@ const AppItem = (app: unknown) => Widget.Box({
     xalign: 0,
     vpack: 'center',
   })],
-});
+}) as AppItem;
 
 export const AppList = () => {
   return Widget.Window({
@@ -35,7 +32,7 @@ export const AppList = () => {
     exclusivity: 'normal',
     class_name: 'app-list',
     name: APP_LAUNCHER,
-    setup: self => self.keybind('Escape', () => App.closeWindow(APP_LAUNCHER)),
+    setup: (self: ReturnType<typeof Widget.Window>) => self.keybind('Escape', () => App.closeWindow(APP_LAUNCHER)),
     child: Widget.Box({
       css: `min-height: 395px`,
       children: [
@@ -45,7 +42,7 @@ export const AppList = () => {
             vertical: true,
             class_name: 'item-box',
             vpack: 'start',
-            setup: self => {
+            setup: (self: ReturnType<typeof Widget.Box>) => {
               self.hook(FOUND_ITEMS, self => {
                 FOUND_ITEMS.value.length = 14;
                 self.children = FOUND_ITEMS.value;
@@ -72,11 +69,11 @@ const scroll_up = () => {
   FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
 }
 
-export const AppLauncher = ({ monitor }) => {
+export const AppLauncher = ({ monitor }: { monitor: number }) => {
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
-      child: MaterialIcon({ icon: Icon.modes.search, size: '1.8rem' })
+      child: MaterialIcon(Icon.modes.search, '1.8rem' )
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
@@ -99,17 +96,17 @@ export const AppLauncher = ({ monitor }) => {
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
           .on('notify::text', entry => {
-            const fzf = new Fzf(applications.list.map(AppItem), {
-              selector: (item: any) => item.app.name,
-              tieBreaker: [(a: any, b: any,) => b.item.app._frequency - a.item.app._frequency]
+            const fzf = new Fzf(applications.list.map(create_app_item), {
+              selector: (item: AppItem) => item.app.name,
+              tieBreaker: [(a: FzfResultItem<AppItem>, b: FzfResultItem<AppItem>,) => b.item.app._frequency - a.item.app._frequency]
             });
-            const text = entry.text;
+            const text = entry.text ?? "";
             // clear the list..
             const names: string[] = [];
-            const fzfResults = fzf.find(text);
-            fzfResults.forEach((entry: any, index: number) => {
-              const nameChars = entry.item.app.name.normalize().split('');
-              const nameMarkup = nameChars.map((char: string, i: number) => {
+            const fzfResults: FzfResultItem<AppItem>[] = fzf.find(text);
+            fzfResults.forEach((entry, index) => {
+              const nameChars: string[] = entry.item.app.name.normalize().split('');
+              const nameMarkup = nameChars.map((char, i) => {
                 if (entry.positions.has(i))
                   return `<span foreground="#e0af68">${char}</span>`;
                 else
@@ -117,9 +114,9 @@ export const AppLauncher = ({ monitor }) => {
               }).join('');
               names[index] = nameMarkup;
             });
-            FOUND_ITEMS.value = fzfResults.map((e: any, i: number) => {
-              const appItem = e.item;
-              appItem.children[0].label = names[i];
+            FOUND_ITEMS.value = fzfResults.map((e, i) => {
+              const appItem: AppItem = e.item;
+              (appItem.children[0] as ReturnType<typeof Widget.Label>).label = names[i];
               if (i === 0) {
                 SELECTION.value = 0;
                 appItem.class_name = 'app-focused';
@@ -127,7 +124,7 @@ export const AppLauncher = ({ monitor }) => {
               return appItem;
             });
           })
-          .hook(App, (self, name, visible) => {
+          .hook(App, (self, name: string, visible: boolean) => {
             if (name !== APP_LAUNCHER || !visible) return;
 
             self.text = '';

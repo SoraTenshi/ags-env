@@ -9,11 +9,11 @@
         "allowJs": true,
         "checkJs": true,
         "strict": true,
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "noEmit": true,
         "baseUrl": ".",
         "typeRoots": [
-            "./types",
+            "./types/**",
             "./node_modules/@girs"
         ],
         "skipLibCheck": true,

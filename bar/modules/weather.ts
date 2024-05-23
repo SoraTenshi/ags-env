@@ -1,8 +1,11 @@
+import { Response } from 'types/utils/fetch.js';
 import { Icon } from 'widgets/icons.js';
 
 const tenMinutes: number = 1000 * 60 * 10;
 
 const location = Variable<string>("");
+
+type WeatherCode = keyof typeof Icon.weather;
 
 const twelveToTwentyFour = (s: string) => {
   const time = s.split(' ');
@@ -38,19 +41,19 @@ export const Weather = () => Widget.Box({
   }),
   ],
 
-  setup: self => {
+  setup: (self: ReturnType<typeof Widget.Label>) => {
     self.poll(tenMinutes, () => {
       Utils.fetch('http://ipinfo.io/city')
-        .then(response => response.text().then(res => {
+        .then((response: Response) => response.text().then(res => {
           location.value = res.trim();
         }));
 
     });
 
-    self.hook(location, self => {
+    self.hook(location, (self: ReturnType<typeof Widget.Label>) => {
       const url = `http://wttr.in/${location.value}?format=j1`;
       Utils.fetch(url)
-        .then(result => result.json().then(res => {
+        .then((result: Response) => result.json().then(res => {
           const weather = res;
           const weatherCondition = weather.current_condition[0];
           //const currentTime = twelveToTwentyFour(weatherCondition['localObsDateTime'].substring(11));
@@ -67,8 +70,8 @@ export const Weather = () => Widget.Box({
 
           const isDay = isDayTime(sunset, sunrise, current);
 
-          let icon = Icon.weather[weatherCondition.weatherCode];
-          const night = Icon.weather[icon];
+          let icon = Icon.weather[weatherCondition.weatherCode as WeatherCode];
+          const night = Icon.weather[icon as WeatherCode];
           icon = isDay ? icon : (night ?? icon);
 
           const temp = weatherCondition.temp_C;
@@ -83,7 +86,7 @@ export const Weather = () => Widget.Box({
             `Humidity: ${weatherCondition.humidity}%` + '\n' +
             `Weather: ${weatherCondition.weatherDesc[0]['value']}`;
         }))
-        .catch(err => console.error(err));
+        .catch((err: Error) => console.error(err));
     });
   },
 });

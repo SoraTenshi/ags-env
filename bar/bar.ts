@@ -67,7 +67,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
     monitor,
     anchor: ['top', 'left', 'right'],
     exclusivity: 'exclusive',
-    setup: self => {
+    setup: (self: ReturnType<typeof Widget.Window>) => {
       self.keybind("Escape", () => {
         try {
           for (const [, name] of Object.entries(barStates)) {
@@ -82,7 +82,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
         BarState.value = `bar ${monitor}`;
         self.keymode = "none";
       })
-        .hook(BarState, self => {
+        .hook(BarState, (self: ReturnType<typeof Widget.Window>) => {
           const bar_state = BarState.value.split(' ');
 
           if (`${monitor}` === bar_state[1]) self.keymode = ('bar' !== bar_state[0] ? "on-demand" : "none");
@@ -101,8 +101,8 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
         'shutdown': Shutdown({ monitor }),
         // 'network-manager', NetworkManager({ monitor }),
       },
-      setup: self => {
-        self.hook(BarState, self => {
+      setup: (self: ReturnType<typeof Widget.Stack>) => {
+        self.hook(BarState, (self: ReturnType<typeof Widget.Stack>) => {
           const bar = BarState.value.split(' ');
           if (bar[1] !== `${monitor}`) return;
           const shown: string | undefined = Object.keys(barStates).find(
