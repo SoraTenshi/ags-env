@@ -43,7 +43,7 @@ export const AppList = () => {
             class_name: 'item-box',
             vpack: 'start',
             setup: (self: ReturnType<typeof Widget.Box>) => {
-              self.hook(FOUND_ITEMS, self => {
+              self.hook(FOUND_ITEMS, (self: ReturnType<typeof Widget.Box>) => {
                 FOUND_ITEMS.value.length = 14;
                 self.children = FOUND_ITEMS.value;
               });
@@ -89,13 +89,13 @@ export const AppLauncher = ({ monitor }: { monitor: number }) => {
         }
       },
 
-      setup: self => {
+      setup: (self: ReturnType<typeof Widget.Entry>) => {
         self
           .keybind("Tab", scroll_down)
           .keybind("Down", scroll_down)
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
-          .on('notify::text', entry => {
+          .on('notify::text', (entry: { text: string; }) => {
             const fzf = new Fzf(applications.list.map(create_app_item), {
               selector: (item: AppItem) => item.app.name,
               tieBreaker: [(a: FzfResultItem<AppItem>, b: FzfResultItem<AppItem>,) => b.item.app._frequency - a.item.app._frequency]
@@ -124,7 +124,7 @@ export const AppLauncher = ({ monitor }: { monitor: number }) => {
               return appItem;
             });
           })
-          .hook(App, (self, name: string, visible: boolean) => {
+          .hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
             if (name !== APP_LAUNCHER || !visible) return;
 
             self.text = '';

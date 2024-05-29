@@ -6,6 +6,8 @@ import { Icon } from 'widgets/icons.js';
 import { MaterialIcon } from 'widgets/icons.js';
 import { BarState } from '../state.js';
 
+import Gdk from 'types/@girs/gdk-3.0/gdk-3.0.js';
+
 const SHUTDOWN = 'shutdown';
 const SELECTION = Variable<number>(0);
 const FOUND_ITEMS = Variable<ReturnType<typeof Widget.Box>[]>([]);
@@ -26,6 +28,20 @@ const commands = {
   hibernate: 'systemctl hibernate',
 };
 type Commands = keyof typeof commands;
+
+const scroll_down = () => {
+  if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
+  SELECTION.value += 1;
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
+}
+
+const scroll_up = () => {
+  if (SELECTION.value === 0) return;
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
+  SELECTION.value -= 1;
+  FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
+}
 
 const ShutdownItem = (elem: string) => Widget.Box({
   class_name: 'app-unfocused',
@@ -91,54 +107,45 @@ export const Shutdown = ({ monitor }: { monitor: number; }) => {
       },
 
       setup: (self: ReturnType<typeof Widget.Entry>) => {
-        self.on('key-press-event', (event: Gdk.Event) => {
-          const first = event.get_keyval()[1];
-          if (first === KEY_Tab || first == KEY_Down) {
-            if (FOUND_ITEMS.value.length <= SELECTION.value + 1) return;
-            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
-            SELECTION.value += 1;
-            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
-          }
-          if (first === 65056 || first === KEY_Up) { // Shift + Tab
-            if (SELECTION.value === 0) return;
-            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-unfocused';
-            SELECTION.value -= 1;
-            FOUND_ITEMS.value[SELECTION.value].class_name = 'app-focused';
-          }
-        }).on('notify::text', (entry: ReturnType<typeof Widget.Entry>) => {
-          const fzf = new Fzf(labels);
-          const text = entry.text;
-          // clear the list..
-          const names: string[] = [];
-          const fzfResults = fzf.find(text);
-          fzfResults.forEach((entry: { item: string; positions: { has: (a: number) => boolean; }; }, index: number) => {
-            const nameChars = entry.item.split('');
-            const nameMarkup = nameChars.map((char: string, i: number) => {
-              if (entry.positions.has(i))
-                return `<span foreground="#e0af68">${char}</span>`;
-              else
-                return char;
-            }).join('');
-            names[index] = nameMarkup;
-          });
-          FOUND_ITEMS.value = fzfResults.map((_e: unknown, i: number) => {
-            const appItem = ShutdownItem(names[i]);
-            if (i === 0) {
-              SELECTION.value = 0;
-              appItem.class_name = 'app-focused';
-            }
-            return appItem;
-          });
-        }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
-          if (name !== SHUTDOWN || !visible) return;
+        self
+          .keybind("Tab", scroll_down)
+          .keybind("Down", scroll_down)
+          .keybind(["SHIFT"], "Tab", scroll_up)
+          .keybind("Up", scroll_up)
+          .on('notify::text', (entry: ReturnType<typeof Widget.Entry>) => {
+            const fzf = new Fzf(labels);
+            const text = entry.text;
+            // clear the list..
+            const names: string[] = [];
+            const fzfResults = fzf.find(text);
+            fzfResults.forEach((entry: { item: string; positions: { has: (a: number) => boolean; }; }, index: number) => {
+              const nameChars = entry.item.split('');
+              const nameMarkup = nameChars.map((char: string, i: number) => {
+                if (entry.positions.has(i))
+                  return `<span foreground="#e0af68">${char}</span>`;
+                else
+                  return char;
+              }).join('');
+              names[index] = nameMarkup;
+            });
+            FOUND_ITEMS.value = fzfResults.map((_e: unknown, i: number) => {
+              const appItem = ShutdownItem(names[i]);
+              if (i === 0) {
+                SELECTION.value = 0;
+                appItem.class_name = 'app-focused';
+              }
+              return appItem;
+            });
+          }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
+            if (name !== SHUTDOWN || !visible) return;
 
-          self.text = '';
-          self.grab_focus();
-        }).hook(BarState, () => {
-          if (BarState.value === `shutdown ${monitor}`) {
-            App.openWindow(SHUTDOWN);
-          }
-        });
+            self.text = '';
+            self.grab_focus();
+          }).hook(BarState, () => {
+            if (BarState.value === `shutdown ${monitor}`) {
+              App.openWindow(SHUTDOWN);
+            }
+          });
       },
     }),
   });
