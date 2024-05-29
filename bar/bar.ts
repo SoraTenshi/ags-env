@@ -8,7 +8,7 @@ import { Media } from './modules/media.js';
 import { RunCat } from './modules/runcat.js';
 import { Shutdown } from './modules/shutdown.js';
 import { SysTray } from './modules/systray.js';
-import { Volume } from './modules/volume.js';
+import { Volume, unhover } from './modules/volume.js';
 import { Weather } from './modules/weather.js';
 import { Workspaces } from './modules/workspaces.js';
 import { Todo } from './modules/todo.js';
@@ -86,7 +86,8 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
           const bar_state = BarState.value.split(' ');
 
           if (`${monitor}` === bar_state[1]) self.keymode = ('bar' !== bar_state[0] ? "on-demand" : "none");
-        });
+        })
+        .on("leave-notify-event", unhover);
     },
     child: Widget.Stack({
       transition: 'crossfade',

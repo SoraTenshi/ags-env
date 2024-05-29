@@ -1,12 +1,22 @@
 import { MaterialIcon, Icon } from 'widgets/icons.js';
+import Gtk from 'gi://Gtk?version=3.0';
 
 const audio = await Service.import('audio');
 
 type AudioInterface = 'microphone' | 'speaker';
+
+export const unhover = (widget: any) => {
+    widget.unset_state_flags(Gtk.StateFlags.PRELIGHT);
+
+    if (widget.child) unhover_children(widget.child);
+    if (widget.children) widget.children.forEach(unhover);
+}
+
 type AudioThreshhold = '101' | '67' | '34' | '1' | '0';
 export const Volume = (type: AudioInterface) => {
   return Widget.EventBox({
-    on_hover: (self: ReturnType<typeof Widget.EventBox>) => {
+    setup: (self: ReturnType<Widget.EventBox>) => self.on("enter-notify-event", () => self.set_state_flags(Gtk.StateFlags.PRELIGHT, false)),
+    on_hover: (self: ReturnType<Widget.EventBox>) => {
       const child = self.child.children[0];
       child['reveal_child'] = true;
     },
