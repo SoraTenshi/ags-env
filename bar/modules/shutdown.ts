@@ -113,32 +113,31 @@ export const Shutdown = ({ monitor }: { monitor: number; }) => {
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
           .on('notify::text', (entry: ReturnType<typeof Widget.Entry>) => {
-            const fzf = new Fzf(labels);
-            const text = entry.text;
-            // clear the list..
-            const names: string[] = [];
-            const fzfResults = fzf.find(text);
-            fzfResults.forEach((entry: { item: string; positions: { has: (a: number) => boolean; }; }, index: number) => {
-              const nameChars = entry.item.split('');
-              const nameMarkup = nameChars.map((char: string, i: number) => {
-                if (entry.positions.has(i))
-                  return `<span foreground="#e0af68">${char}</span>`;
-                else
-                  return char;
-              }).join('');
-              names[index] = nameMarkup;
-            });
-            FOUND_ITEMS.value = fzfResults.map((_e: unknown, i: number) => {
-              const appItem = ShutdownItem(names[i]);
-              if (i === 0) {
-                SELECTION.value = 0;
-                appItem.class_name = 'app-focused';
-              }
-              return appItem;
-            });
-          }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
-            if (name !== SHUTDOWN || !visible) return;
-
+          const fzf = new Fzf(labels);
+          const text = entry.text;
+          // clear the list..
+          const names: string[] = [];
+          const fzfResults = fzf.find(text);
+          fzfResults.forEach((entry: { item: string; positions: { has: (a: number) => boolean; }; }, index: number) => {
+            const nameChars = entry.item.split('');
+            const nameMarkup = nameChars.map((char: string, i: number) => {
+              if (entry.positions.has(i))
+                return `<span foreground="#e0af68">${char}</span>`;
+              else
+                return char;
+            }).join('');
+            names[index] = nameMarkup;
+          });
+          FOUND_ITEMS.value = fzfResults.map((_e: unknown, i: number) => {
+            const appItem = ShutdownItem(names[i]);
+            if (i === 0) {
+              SELECTION.value = 0;
+              appItem.class_name = 'app-focused';
+            }
+            return appItem;
+          });
+        }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
+          if (name !== SHUTDOWN || !visible) return;
             self.text = '';
             self.grab_focus();
           }).hook(BarState, () => {

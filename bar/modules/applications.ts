@@ -95,7 +95,7 @@ export const AppLauncher = ({ monitor }: { monitor: number }) => {
           .keybind("Down", scroll_down)
           .keybind(["SHIFT"], "Tab", scroll_up)
           .keybind("Up", scroll_up)
-          .on('notify::text', (entry: { text: string; }) => {
+          .on('notify::text', (entry: ReturnType<typeof Widget.Entry>) => {
             const fzf = new Fzf(applications.list.map(create_app_item), {
               selector: (item: AppItem) => item.app.name,
               tieBreaker: [(a: FzfResultItem<AppItem>, b: FzfResultItem<AppItem>,) => b.item.app._frequency - a.item.app._frequency]
