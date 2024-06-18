@@ -1,3 +1,5 @@
+import { VpnConnection } from 'types/service/network.js';
+
 import { Icon } from 'widgets/icons.js';
 
 const network = await Service.import('network');
@@ -7,7 +9,10 @@ const WifiIndicator = () => Widget.Box({
     Widget.Label({
       css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
       has_tooltip: true,
-      tooltip_markup: Utils.merge([network.wifi.bind('ssid'), network.wifi.bind('strength')], (ssid: string, strength: number) => `SSID: ${ssid + '\n'}Strength: ${strength}%`),
+      tooltip_markup: Utils.merge([network.wifi.bind('ssid'), network.wifi.bind('strength'), network.vpn.bind('connections')], (ssid: string, strength: number, vpn_state: VpnConnection[]) => 
+        `SSID: ${ssid}
+Strength: ${strength}%
+VPNs: ${vpn_state.map((v,) => `${v.id}: ${v.state}`).join('\n\t')}`),
       label: network.wifi.bind("strength").as((strength: number) => {
         if (strength < 10) return Icon.wifi.none;
         if (strength < 26) return Icon.wifi.bad;
@@ -28,18 +33,20 @@ const WiredIndicator = () => Widget.Label({
     if (state === "disconnected") return Icon.wired.poweroff;
     return Icon.wired.poweroff;
   }),
-  tooltip_markup: network.wired.bind('internet').as((state: string) => `Connection: ${state}`),
+  tooltip_markup: Utils.merge([network.wired.bind('internet'), network.vpn.bind('connections')], (state: string, vpn_state: VpnConnection[]) => `Connection: ${state}
+VPNs: ${vpn_state.map((v,) => `${v.id}: ${v.state}`).join('\n\t')}`),
 });
 
-export const Connection = () => Widget.Box({
+export const Connection = () => Widget.Button({
   class_name: 'network',
-  children: [
-    Widget.Stack({
-      children: {
-        'wifi': WifiIndicator(),
-        'wired': WiredIndicator(),
-      },
-      shown: network.bind('primary'),
-    }),
-  ],
+  // on_primary_clicked: (_: unknown) => {
+    // spawn a neat window which contains the ssid information + password thingy for establishing a connection
+  // },
+  child: Widget.Stack({
+    children: {
+      'wifi': WifiIndicator(),
+      'wired': WiredIndicator(),
+    },
+    shown: network.bind('primary'),
+  }),
 });
