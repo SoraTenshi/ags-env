@@ -8,7 +8,7 @@ export const Executor = ({ monitor }: { monitor: number; }) => {
   return Widget.CenterBox({
     start_widget: Widget.Box({
       class_name: 'pre-search',
-      child: MaterialIcon(Icon.modes.execute, '1.8rem' )
+      child: MaterialIcon(Icon.modes.execute, '1.8rem')
     }),
     center_widget: Widget.Entry({
       class_name: 'search',
@@ -19,12 +19,16 @@ export const Executor = ({ monitor }: { monitor: number; }) => {
       },
 
       setup: (self: ReturnType<typeof Widget.Entry>) => {
-        self.hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
-          if (name !== EXECUTOR || !visible) return;
-
-          self.text = '';
-          self.grab_focus();
-        })
+        self
+          .hook(App, (_: unknown, name: string, visible: boolean) => {
+            if (name !== EXECUTOR || !visible) return;
+          })
+          .hook(BarState, (self: ReturnType<typeof Widget.Window>) => {
+            if (BarState.value === `exec ${monitor}`) {
+              self.text = '';
+              self.grab_focus();
+            }
+          });
       },
     }),
   });

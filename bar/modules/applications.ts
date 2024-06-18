@@ -9,7 +9,7 @@ const applications =  await Service.import('applications');
 
 const APP_LAUNCHER = 'app-items';
 const SELECTION = Variable<number>(0);
-const FOUND_ITEMS = Variable<any>([]);
+const FOUND_ITEMS = Variable<ReturnType<typeof Widget.Entry>>([]);
 
 type AppItem = ReturnType<typeof Widget.Box> & { app: Application };
 const create_app_item = (app: Application): AppItem => Widget.Box({
@@ -124,14 +124,15 @@ export const AppLauncher = ({ monitor }: { monitor: number }) => {
               return appItem;
             });
           })
-          .hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
+          .hook(App, (_: unknown, name: string, visible: boolean) => {
             if (name !== APP_LAUNCHER || !visible) return;
-
-            self.text = '';
-            self.grab_focus();
           })
-          .hook(BarState, () => {
-            if (BarState.value === `app-launcher ${monitor}`) App.openWindow(APP_LAUNCHER);
+          .hook(BarState, (self: ReturnType<typeof Widget.Window>) => {
+            if (BarState.value === `app-launcher ${monitor}`) {
+              App.openWindow(APP_LAUNCHER);
+              self.text = '';
+              self.grab_focus();
+            }
           });
       }
     }),

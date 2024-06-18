@@ -7,7 +7,7 @@ const WifiIndicator = () => Widget.Box({
     Widget.Label({
       css: "font-family: 'Material Symbols Sharp'; font-size: 1.4rem;",
       has_tooltip: true,
-      tooltip_markup: Utils.merge([network.wifi.bind('ssid'), network.wifi.bind('strength')], (ssid: string, strength: number) => `SSID: ${network.wifi.ssid + '\n'}Strength: ${network.wifi.strength}%`),
+      tooltip_markup: Utils.merge([network.wifi.bind('ssid'), network.wifi.bind('strength')], (ssid: string, strength: number) => `SSID: ${ssid + '\n'}Strength: ${strength}%`),
       label: network.wifi.bind("strength").as((strength: number) => {
         if (strength < 10) return Icon.wifi.none;
         if (strength < 26) return Icon.wifi.bad;

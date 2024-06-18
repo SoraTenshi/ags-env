@@ -85,7 +85,7 @@ export const Bar = ({ monitor } = { monitor: 1 }) => {
         .hook(BarState, (self: ReturnType<typeof Widget.Window>) => {
           const bar_state = BarState.value.split(' ');
 
-          if (`${monitor}` === bar_state[1]) self.keymode = ('bar' !== bar_state[0] ? "on-demand" : "none");
+          if (`${monitor}` === bar_state[1]) self.keymode = ('bar' !== bar_state[0] ? "exclusive" : "none");
         })
         .on("leave-notify-event", unhover);
     },

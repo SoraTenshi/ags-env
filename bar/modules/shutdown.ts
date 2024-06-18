@@ -1,12 +1,8 @@
 import { Fzf } from 'fzf';
 
-import { KEY_Down, KEY_Tab, KEY_Up } from 'types/@girs/gdk-3.0/gdk-3.0.cjs';
-
 import { Icon } from 'widgets/icons.js';
 import { MaterialIcon } from 'widgets/icons.js';
 import { BarState } from '../state.js';
-
-import Gdk from 'types/@girs/gdk-3.0/gdk-3.0.js';
 
 const SHUTDOWN = 'shutdown';
 const SELECTION = Variable<number>(0);
@@ -136,15 +132,15 @@ export const Shutdown = ({ monitor }: { monitor: number; }) => {
             }
             return appItem;
           });
-        }).hook(App, (self: ReturnType<typeof Widget.Entry>, name: string, visible: boolean) => {
+        }).hook(App, (_: unknown, name: string, visible: boolean) => {
           if (name !== SHUTDOWN || !visible) return;
+        }).hook(BarState, (self: ReturnType<typeof Widget.Window>) => {
+          if (BarState.value === `shutdown ${monitor}`) {
+            App.openWindow(SHUTDOWN);
             self.text = '';
             self.grab_focus();
-          }).hook(BarState, () => {
-            if (BarState.value === `shutdown ${monitor}`) {
-              App.openWindow(SHUTDOWN);
-            }
-          });
+          }
+        });
       },
     }),
   });

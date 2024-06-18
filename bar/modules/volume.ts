@@ -5,7 +5,7 @@ const audio = await Service.import('audio');
 
 type AudioInterface = 'microphone' | 'speaker';
 
-export const unhover = (widget: any) => {
+export const unhover = (widget: ReturnType<typeof Widget.EventBox>) => {
     widget.unset_state_flags(Gtk.StateFlags.PRELIGHT);
 
     if (widget.child) unhover_children(widget.child);
