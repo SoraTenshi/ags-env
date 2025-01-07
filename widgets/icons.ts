@@ -80,9 +80,9 @@ export const Icon = {
     good: '\ue1d8',
   },
   workspace: {
-    active: '\ue146',
-    inactive: '\ue835',
-    occupied: '\ue909',
+    active: '\ue837',
+    inactive: '\ue836',
+    occupied: '\ue86c',
   },
   systray: {
     unhide: '\ue2ea',
