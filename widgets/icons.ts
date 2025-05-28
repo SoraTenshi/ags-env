@@ -17,56 +17,63 @@ export const Icon = {
     muted: '\ue02b',
   },
   weather: {
-    '113': '\ue430', //"Sunny",
-    '116': '\uf172', //"PartlyCloudy",
-    '119': '\uf172', //"Cloudy",
-    '122': '\ue2bd', //"VeryCloudy",
-    '143': '\ue818', //"Fog",
-    '176': '\uf176', //"LightShowers",
-    '179': '\uf60b', //"LightSleetShowers",
-    '182': '\uf60b', //"LightSleet",
-    '185': '\uf60b', //"LightSleet",
-    '200': '\uebdb', //"ThunderyShowers",
-    '227': '\ue2cd', //"LightSnow",
-    '230': '\uf61c', //"HeavySnow",
-    '248': '\ue818', //"Fog",
-    '260': '\ue818', //"Fog",
-    '263': '\uf176', //"LightShowers",
-    '266': '\uf176', //"LightRain",
-    '281': '\uf60b', //"LightSleet",
-    '284': '\uf60b', //"LightSleet",
-    '293': '\uf176', //"LightRain",
-    '296': '\uf176', //"LightRain",
-    '299': '\uf176', //"HeavyShowers",
-    '302': '\uf61f', //"HeavyRain",
-    '305': '\uf176', //"HeavyShowers",
-    '308': '\uf61f', //"HeavyRain",
-    '311': '\uf60b', //"LightSleet",
-    '314': '\uf60b', //"LightSleet",
-    '317': '\uf60b', //"LightSleet",
-    '320': '\ue2cd', //"LightSnow",
-    '323': '\ue2cd', //"LightSnowShowers",
-    '326': '\ue2cd', //"LightSnowShowers",
-    '329': '\ueb3b', //"HeavySnow",
-    '332': '\ueb3b', //"HeavySnow",
-    '335': '\ueb3b', //"HeavySnowShowers",
-    '338': '\ueb3b', //"HeavySnow",
-    '350': '\uf60b', //"LightSleet",
-    '353': '\uf176', //"LightShowers",
-    '356': '\uf176', //"HeavyShowers",
-    '359': '\uf61f', //"HeavyRain",
-    '362': '\uf60b', //"LightSleetShowers",
-    '365': '\uf60b', //"LightSleetShowers",
-    '368': '\ue2cd', //"LightSnowShowers",
-    '371': '\ue2cd', //"HeavySnowShowers",
-    '374': '\uf60b', //"LightSleetShowers",
-    '377': '\uf60b', //"LightSleet",
-    '386': '\uebdb', //"ThunderyShowers",
-    '389': '\uebdb', //"ThunderyHeavyRain",
-    '392': '\uebdb', //"ThunderySnowShowers",
-    '395': '\uf61c', //"HeavySnowShowers",
-    '\ue430': '\uf159', // Night
-    '\uf172': '\uea46', // Partly cloudy, night
+    '113': '\uf00d', //"Sunny", day
+    '116': '\uf002', //"PartlyCloudy", day
+    '119': '\uf041', //"Cloudy",
+    '122': '\uf013', //"VeryCloudy",
+    '143': '\uf014', //"Fog", day
+    '248': '\uf014', //"Fog", day
+    '260': '\uf014', //"Fog", day
+    '176': '\uf009', //"LightShowers", day
+    '263': '\uf009', //"LightShowers", day
+    '353': '\uf009', //"LightShowers", day
+    '266': '\uf008', //"LightRain", day
+    '293': '\uf008', //"LightRain", day
+    '296': '\uf008', //"LightRain", day
+    '179': '\uf0b2', //"LightSleetShowers", day
+    '362': '\uf0b2', //"LightSleetShowers", day
+    '365': '\uf0b2', //"LightSleetShowers", day
+    '374': '\uf0b2', //"LightSleetShowers", day
+    '182': '\uf0b2', //"LightSleet", day
+    '185': '\uf0b2', //"LightSleet", day
+    '281': '\uf0b2', //"LightSleet", day
+    '284': '\uf0b2', //"LightSleet", day
+    '311': '\uf0b2', //"LightSleet", day
+    '314': '\uf0b2', //"LightSleet", day
+    '317': '\uf0b2', //"LightSleet", day
+    '377': '\uf0b2', //"LightSleet", day
+    '350': '\uf0b2', //"LightSleet", day
+    '200': '\uf00e', //"ThunderyShowers", day
+    '386': '\uf00e', //"ThunderyShowers", day
+    '227': '\uf00a', //"LightSnow", day
+    '320': '\uf00a', //"LightSnow", day
+    '323': '\uf00a', //"LightSnowShowers", day
+    '326': '\uf00a', //"LightSnowShowers", day
+    '368': '\uf00a', //"LightSnowShowers", day
+    // Use neutral for heavy stuff
+    '230': '\uf064', //"HeavySnow",
+    '329': '\uf064', //"HeavySnow",
+    '332': '\uf064', //"HeavySnow",
+    '338': '\uf064', //"HeavySnow",
+    '299': '\uf019', //"HeavyShowers",
+    '305': '\uf019', //"HeavyShowers",
+    '356': '\uf019', //"HeavyShowers",
+    '302': '\uf019', //"HeavyRain",
+    '308': '\uf019', //"HeavyRain",
+    '359': '\uf019', //"HeavyRain",
+    '371': '\uf01b', //"HeavySnowShowers",
+    '395': '\uf01b', //"HeavySnowShowers",
+    '335': '\uf01b', //"HeavySnowShowers",
+    '389': '\uf01e', //"ThunderyHeavyRain",
+    '392': '\uf01d', //"ThunderySnowShowers",
+    // Night~
+    '\uf00d': '\uf02e', // Night
+    '\uf002': '\uf086', //"PartlyCloudy"
+    '\uf014': '\uf04a', //"Fog"
+    '\uf008': '\uf028', //"LightRain"
+    '\uf0b2': '\uf0b3', //"LightSleetShowers", day
+    '\uf00e': '\uf06a', //"ThunderyShowers", day
+    '\uf00a': '\uf038', //"LightSnow", day
   },
   wired: {
     power: '\ue63c',
@@ -128,6 +135,6 @@ export const Icon = {
 
 export const MaterialIcon = (icon: string, size = '1.0rem', class_name = 'icon-material') => Widget.Label({
   class_name,
-  css: `font-family: 'Material Symbols Sharp'; font-size: ${size}`,
+  css: `font-size: ${size}`,
   label: icon,
 })

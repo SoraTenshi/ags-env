@@ -69,6 +69,7 @@
 }
 
 .weather-icon {
+  font-family: "Weather Icons";
   margin-left: 5px;
   font-size: 1.4rem;
 }

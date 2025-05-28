@@ -17,7 +17,6 @@ export const Workspaces = () => Widget.Box({
       truncate: 'end',
       max_width_chars: 20,
       class_name: 'current-title',
-      css: '',
     }),
     end_widget: Widget.Box({
       class_name: 'workspaces',

@@ -33,7 +33,6 @@ export const Weather = () => Widget.Box({
   has_tooltip: true,
   children: [Widget.Label({
     class_name: 'weather-icon',
-    css: "font-family: 'Material Symbols Sharp'",
     label: Icon.general.question,
   }), Widget.Label({
     class_name: 'weather-temp',
@@ -42,16 +41,8 @@ export const Weather = () => Widget.Box({
   ],
 
   setup: (self: ReturnType<typeof Widget.Label>) => {
-    self.poll(tenMinutes, () => {
-      Utils.fetch('http://ipinfo.io/city')
-        .then((response: Response) => response.text().then(res => {
-          location.value = res.trim();
-        }));
-
-    });
-
     self.hook(location, (self: ReturnType<typeof Widget.Label>) => {
-      const url = `http://wttr.in/${location.value}?format=j1`;
+      const url = `http://wttr.in/?format=j1`;
       Utils.fetch(url)
         .then((result: Response) => result.json().then(res => {
           const weather = res;
