@@ -70,8 +70,10 @@
 
 .weather-icon {
   font-family: "Weather Icons";
-  margin-left: 5px;
-  font-size: 1.4rem;
+  margin-left: 10px;
+  font-size: 1rem;
+  /* Compensate for font */
+  margin-top: 3px;
 }
 
 .weather-temp {
