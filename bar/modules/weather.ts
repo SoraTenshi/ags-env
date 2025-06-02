@@ -24,7 +24,7 @@ const twelveToTwentyFour = (s: string) => {
 }
 
 const isDayTime = (sunset: Date, sunrise: Date, now: Date) => {
-  const ret = sunset.getTime() > now.getTime() || now.getTime() > sunrise.getTime();
+  const ret = sunset.getTime() > now.getTime() && now.getTime() > sunrise.getTime();
   return ret;
 }
 
